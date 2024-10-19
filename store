@@ -1,0 +1,44 @@
+-- CREATE   user guser
+
+create table public.user
+(
+
+    user_id varchar(20) PRIMARY KEY,
+    email_id varchar(20) UNIQUE NOT NULL,
+    password varchar(20),
+    first_name varchar(50) NOT NULL,
+    last_name varchar(50),
+    mobile_no varchar(20)
+);
+
+CREATE TABLE public.address
+(
+    address_id int PRIMARY KEY,
+    address_1 varchar(100) NOT NULL,
+    address_2 varchar(100) NOT NULL,
+    zip_code int NOT NULL,
+    city varchar(100) NOT NULL,
+    state varchar(100) NOT NULL,
+    user_id varchar(100) NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES public.user(user_id),
+    UNIQUE(address_1,address_2,zip_code,city,state,user_id)
+);
+
+
+CREATE TABLE public.category
+(
+    category_id  SERIAL PRIMARY KEY ,  -- IT IS EQUIVALENT TO AUTOINCREMENT
+    category_name varchar(100) NOT NULL UNIQUE,
+    category_description text default NULL
+   
+);
+
+
+CREATE TABLE public.product
+(
+    product_id int SERIAL PRIMARY KEY,
+    product_name varchar(100) NOT NULL,
+    units int default 0 NOT NULL,
+    
+
+)
