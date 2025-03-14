@@ -1,0 +1,358 @@
+
+
+
+
+
+Message phase2_success_notification
+
+
+
+
+
+
+
+
+
+mock up DATA 
+development
+
+
+
+Table clustering
+--
+
+When data is loaded into Snowflake, it is initially stored in a “load table.” The load table is a temporary table used for 
+staging data before it’s loaded into the actual table. Once the data is staged in the load table, 
+Snowflake automatically reorganizes it into micro-partitions based on the Snowflake clustering keys defined for the table.
+
+
+
+We can add the clustering key either at the table creation time or we can alter the table and then add clustering key using below syntax.
+
+
+
+clustering depth
+
+It refers to how well the data in the table is organized according to cluster keys you have defined
+
+
+Clustering Depth is table metadata which keep track of how similar data are stored in multiple/single micro-partition
+Lesser the clustering dept better the table is clustered. A table with no micro-partitions (i.e. an unpopulated/empty table) has a clustering depth of 0.
+
+
+
+
+AWS s3 snowflake connection and data dumping
+
+
+First create connection between s3 and snowflake by following query:-
+
+create table to load data with field name and datatypes
+
+
+CREATE OR REPLACE STORAGE INTEGRATION my_s3_integration
+TYPE = EXTERNAL_STAGE
+	STORAGE_PROVIDER = S3
+	ENABLED = TRUE
+	STORAGE_AWS_ROLE_ARN = '<your_aws_role_arn>'
+	STORAGE_ALLOWED_LOCATIONS = ('s3://my-bucket/path/to/folder/','s3://my-bucket/path/to/folder2');
+
+DESC INTEGRATION my_s3_integration;
+
+
+
+CREATE OR REPLACE FILE FORMAT dbo.schema.my_csv_format
+TYPE = 'CSV'
+	FIELD_OPTIONALLY_ENCLOSED_BY = '"'
+	SKIP_HEADER = 1
+	FIELD_DELIMITER = ','
+	RECORD_DELIMITER = '\n'
+	NULL_IF = ('NULL', 'null', '')
+	EMPTY_FIELD_AS_NULL = TRUE;
+
+
+
+
+
+CREATE OR REPLACE STAGE dbo.schema.my_s3_stage
+	URL = 's3://my-bucket/path/to/folder/'
+	STORAGE_INTEGRATION = my_s3_integration
+	FILE_FORMAT = dbo.schema.my_csv_format;
+
+
+COPY INTO healthcare 
+from @dbo.schema.my_s3_stage 
+on error=CONTINUE
+
+
+---------------------------------------------------------
+
+parquet DATA
+
+
+CREATE OR REPLACE table demo_db.public.healthcare (
+health_cols VARIANT DEFAULT NULL
+);
+
+CREATE OR REPLACE FILE FORMAT my_parquet_format
+TYPE = 'PARQUET';
+
+CREATE OR REPLACE STORAGE INTEGRATION my_s3_integration
+TYPE = EXTERNAL_STAGE
+STORAGE_PROVIDER = S3
+ENABLED = TRUE
+STORAGE_AWS_ROLE_ARN = '<your_aws_role_arn>'
+STORAGE_ALLOWED_LOCATIONS = ('s3://my-bucket/path/to/folder/');
+
+
+
+
+
+CREATE OR REPLACE STAGE my_s3_stage
+URL = 's3://my-bucket/path/to/folder/'
+STORAGE_INTEGRATION = my_s3_integration
+FILE_FORMAT = my_parquet_format;
+
+
+
+COPY INTO my_table
+FROM @my_s3_stage
+FILE_FORMAT = (FORMAT_NAME = 'my_parquet_format')
+ON_ERROR = 'CONTINUE';
+
+
+-------------------------------------------------------------
+
+
+Parquet DATA After Extracting
+
+
+CREATE OR REPLACE table demo_db.public.healthcare (
+health_cols VARIANT DEFAULT NULL
+);
+
+CREATE OR REPLACE FILE FORMAT my_parquet_format
+TYPE = 'PARQUET';
+
+CREATE OR REPLACE STORAGE INTEGRATION my_s3_integration
+TYPE = EXTERNAL_STAGE
+STORAGE_PROVIDER = S3
+ENABLED = TRUE
+STORAGE_AWS_ROLE_ARN = '<your_aws_role_arn>'
+STORAGE_ALLOWED_LOCATIONS = ('s3://my-bucket/path/to/folder/');
+
+
+
+
+
+CREATE OR REPLACE STAGE my_s3_stage
+URL = 's3://my-bucket/path/to/folder/'
+STORAGE_INTEGRATION = my_s3_integration
+FILE_FORMAT = my_parquet_format;
+
+COPY INTO my_table
+FROM (select $1:covered_charges::VARCHAR,
+ $1:covered_charges::VARCHAR,
+ $1:total_payment::VARCHAR,
+ $1:total_discharge::VARCHAR,
+ $1:"total's inc"::VARCHAR
+ FROM @my_s3_stage);
+
+
+--------------------------------------------------------------------------
+
+
+
+same process as like parquet for json DATA 
+
+
+
+
+
+
+METADATA$FILENAME,
+METADATA$FILE_ROW_NUMBER,
+TO_TIMESTAMP_NTZ
+
+
+
+snowpipe
+
+Dear Sender, I am on leave today. In case of emergency contact 7558739165
+
+
+Type of OBJECT in snowflake
+PERMANENT
+temporary
+transient
+
+
+clone table command
+
+
+
+CREATE TABLE new_table_name CLONE existing_table_name;
+
+
+------ Make a PERMANENT table TRANSIENT
+CREATE OR REPLACE transient TABLE EMPL_TRANSIENT
+  CLONE EMPLOYEES_PERMANENT;
+  
+DROP TABLE EMPLOYEES_PERMANENT;
+
+------ Make a TRANSIENT table TEMPORARY
+CREATE OR REPLACE TEMPORARY TABLE EMPL_TEMPORARY
+  CLONE EMPL_TRANSIENT;
+  
+DROP TABLE EMPL_TRANSIENT;
+
+
+
+
+
+name 
+
+user table staged
+
+
+
+
+
+
+
+-------------time travel------------
+
+for permanent -  90 days
+for temporary - 10 days
+for transient - 10 days
+
+
+
+
+
+
+dbt_utils
+equal_rowcount: Asserts that two relations have the same number of rows.
+fewer_rows_than: Asserts that the respective model has fewer rows than the model being compared.
+equality: Asserts the equality of two relations, optionally specifying a subset of columns to compare.
+date_spine: Generates a date spine (a continuous series of dates).
+deduplicate: Removes duplicate rows from a relation.
+generate_series: Generates a series of values based on the provided parameters.
+pivot: Pivots a table, turning rows into columns.
+union_relations: Unions multiple relations into one1.
+codegen
+generate_model_yaml: Generates YAML configuration for a model.
+generate_source_yaml: Generates YAML configuration for a source.
+generate_base_model: Generates a base model SQL file.
+generate_schema_tests: Generates schema tests for a model1.
+dbt_project_evaluator
+evaluate_project: Evaluates the quality of your dbt project based on predefined criteria.
+check_unused_models: Identifies models that are not being used.
+check_unused_sources: Identifies sources that are not being used1.
+audit_helper
+audit_column: Audits a specific column in a table.
+audit_table: Audits an entire table for data quality issues.
+audit_schema: Audits all tables in a schema1.
+dbt_external_tables
+create_external_table: Creates an external table in your data warehouse.
+refresh_external_table: Refreshes an external table to ensure it is up-to-date.
+drop_external_table: Drops an external table from your data warehouse1.
+dbt_expectations
+expect_column_values_to_be_unique: Ensures that column values are unique.
+expect_column_values_to_not_be_null: Ensures that column values are not null.
+expect_table_row_count_to_be_between: Ensures that the row count of a table is within a specified range1.
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+===========================
+
+
+mailability table
+
+
+12.30
+
+user profile
+
+selct only email
+,
+extrernal id
+
+sha2 lower  derived external 
+
+constum
+presale -  cutom last form submited not null
+
+icloud.com  most user
+
+
+
+
+Pre Hook
+Post Hook
+on run end command
+vars
+
+snapshot
+
+ 
+ 
+ 
+
+Snowflake:
+
+
+on prem and cloud databases
+
+
+data warehouse
+data lake
+
+snowsql
+
+
+Architecture -https://medium.com/@a.kaushik5587/what-makes-snowflake-so-powerful-its-the-hybrid-of-shared-disk-and-shared-nothing-architecture-5b4fa8f039fa
+
+
+
+shared disk sahred nothing
+
+
+row and column oriented databases
+
+cluster in warehousing
+multi clustering
+
+
+create table query in snowflake 
+desc table  my_table 
+
+select get_ddl('table','my_table'); -- will get ddl of the current table 
+
+
+desc table prod_dwdb.fds_pii.dim_mkt_fan_src_email_profile_info
+select get_ddl('table','prod_dwdb.fds_pii.dim_mkt_fan_src_email_profile_info')
+
+
+till 20-11-2024 present in personal
+
+21-11-2024

@@ -1,0 +1,57 @@
+?
+
+
+AI-generated content may be incorrect
+Can you make it more concise?
+Add a personal statement.
+Include specific achievements.
+
+Response stopped
+m
+
+
+
+win scp we
+
+LES- Live Event System
+
+TMS - Talent information system
+
+SQL server 
+SFTP location
+
+
+ETIX- comes from API
+
+
+What is AD-hoc
+
+Types of states in snowflake
+
+
+
+
+
+MA
+Manikandan Anantha Narayanan
+10:23 PM
+I mean what are the considerations when we try to perform benchmarking, as I have encountered a scenario where Snowflake Managed is less performant compared to Externally managed
+CL
+Chinmayee Lakkad
+10:24 PM
+Could you describe that scenario a bit more?
+avatar
+Anonymous Attendee
+10:26 PM
+If possible, can you please point/provide me some Snowflake docs link for the below. Thanks in advance.
+1) Running Standalone Apache Spark on Snowflake environment.
+2) Running notebook command on Snowflake.
+This question has been answered live
+CL
+Chinmayee Lakkad
+10:29 PM
+1. here’s one quickstart that you can refer to which shows running Apache Spark on Notebooks with Container Runtime: https://quickstarts.snowflake.com/guide/apache-iceberg-snowflake-open-catalog-snowpipe-streaming/index.html?index=..%2F..index#3
+
+2. https://quickstarts.snowflake.com/guide/getting_started_with_snowflake_notebooks/index.html?index=..%2F..index#2
+
+

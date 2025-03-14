@@ -1,0 +1,221 @@
+1.	How is snowflake differ from other database ?
+
+Snowflake and traditional databases differ significantly in their architecture, scalability, performance, and management. Here are some key differences:
+1.	Architecture:
+•	Traditional Databases: Typically built on on-premises hardware or early cloud models, traditional databases often use a monolithic architecture. They require substantial investment in infrastructure and manual management of hardware and software.
+•	Snowflake: A cloud-native platform with a multi-cluster, shared-data architecture. It separates storage and compute, allowing each to scale independently. Snowflake operates entirely in the cloud, supporting multiple cloud providers (AWS, Azure, Google Cloud)
+2.	Scalability and Performance:
+•	Traditional Databases: Scaling often involves adding more physical resources or performing costly upgrades, which can be slow and disruptive
+•	Snowflake: Offers automatic scalability and performance optimization. It can scale resources up or down based on demand without impacting ongoing workloads
+3.	Data Sharing and Collaboration:
+•	Traditional Databases: Data sharing is often limited and involves data replication or duplication, which can be slow and increase storage costs
+•	Snowflake: Provides built-in data sharing features, allowing secure, real-time data sharing without moving or copying data. Snowflake's Data Marketplace also offers access to external datasets
+4.	Maintenance and Management:
+•	Traditional Databases: Require extensive manual maintenance, including backups, indexing, and performance tuning
+•	Snowflake: Fully managed service that handles maintenance tasks automatically, reducing the administrative burden on IT teams
+5.	Security and Compliance:
+•	Traditional Databases: Security and compliance require manual implementation and monitoring
+•	Snowflake: Built with end-to-end encryption, data masking, and multi-factor authentication. It complies with various industry standards, simplifying regulatory compliance
+6.	Cost Efficiency:
+•	Traditional Databases: Often come with significant upfront costs for hardware and ongoing maintenance
+•	Snowflake: Uses a pay-as-you-go pricing model, allowing organizations to pay only for what they use. This model optimizes costs by scaling resources based on demand
+7.	Data Diversity:
+•	Traditional Databases: Typically optimized for structured data, making it difficult to handle semi-structured data
+•	Snowflake: Supports both structured and semi-structured data natively, enabling users to load and analyze diverse data types without the need for data transformations
+
+These differences make Snowflake a flexible, scalable, and efficient alternative to traditional databases, especially for modern data warehousing and analytics needs.
+
+
+2.	Snowflake architecture
+Snowflake's architecture is designed to fully leverage the cloud, offering a unique combination of performance, scalability, and ease of use. Here are the three main layers of Snowflake's architecture:
+1.	Database Storage:
+•	When data is loaded into Snowflake, it is reorganized into an optimized, compressed, columnar format and stored in cloud storage. Snowflake manages all aspects of data storage, including organization, file size, structure, compression, and metadata
+2.	Query Processing:
+•	This layer uses "virtual warehouses," which are MPP (massively parallel processing) compute clusters. Each virtual warehouse operates independently, ensuring that the performance of one does not affect others. This allows for high concurrency and efficient query processing
+3.	Cloud Services:
+•	This layer coordinates activities across Snowflake, handling tasks such as authentication, infrastructure management, metadata management, query parsing and optimization, and access control. It ties together all the different components of Snowflake to process user requests
+Snowflake's architecture combines elements of traditional shared-disk and shared-nothing database architectures, providing the data management simplicity of a shared-disk architecture with the performance and scale-out benefits of a shared-nothing architecture
+3.	What is stream? How it works? Different types of stream?
+In Snowflake, a **stream** is a powerful feature used for change data capture (CDC). It tracks changes (inserts, updates, and deletes) made to tables, allowing you to query and consume these changes efficiently. Here's a breakdown of how streams work and the different types available:
+### How Streams Work
+1. **Change Data Capture (CDC)**:
+   - When a stream is created on a table, it records the data manipulation language (DML) changes made to that table. This includes inserts, updates, and deletes.
+   - Streams do not store the actual data but rather the metadata about the changes, including the state of a row before and after the change.
+
+2. **Offset Management**:
+   - A stream maintains an offset, which is a point in time that marks the current version of the table. When changes occur, the stream updates this offset to reflect the new state of the table.
+   - The stream can be queried to return the changes that have occurred since the last offset, providing a way to process only the new or modified data.
+3. **Consumption**:
+   - Streams can be consumed in SQL queries or used in tasks to automate data processing workflows. When a stream is queried, it returns the changes in the same structure as the source table, along with additional metadata columns.
+### Types of Streams
+1. **Standard Streams**:
+   - Track all types of DML operations (INSERT, UPDATE, DELETE) on the source table.
+   - Useful for comprehensive change tracking and complex data processing tasks.
+
+2. **Append-Only Streams**:
+   - Track only INSERT operations on the source table.
+   - Ideal for scenarios where only new data additions need to be processed, such as logging or incremental data loads.
+
+### Use Cases
+- **Data Pipelines**: Streams are often used in data pipelines to process only the data that has changed since the last run, making the pipelines more efficient and reducing processing time.
+- **Real-Time Analytics**: By continuously capturing and processing changes, streams enable real-time analytics and reporting.
+- **Data Synchronization**: Streams can help synchronize data between different systems by capturing and applying changes incrementally.
+
+4.	What are views? Types of view ?
+In Snowflake, a view is a database object that allows you to save a query and treat its result set as if it were a table. Views are useful for simplifying complex queries, enhancing security by restricting access to specific data, and improving code modularity and reusability
+Types of Views in Snowflake
+1.	Non-Materialized Views:
+•	Standard Views: These are the most common type of views. They do not store the actual data but execute the underlying query each time the view is accessed. This means the data is always current, but performance can be slower for complex queries.
+•	Secure Views: These are a type of non-materialized view that provide enhanced security features. They ensure that the underlying data is protected and that the view's definition and data are not exposed to unauthorized users
+•	Recursive Views: These views can refer to themselves, allowing for hierarchical or recursive data structures. They are useful for representing organizational hierarchies or bill of materials
+2.	Materialized Views:
+•	Unlike non-materialized views, materialized views store the result set of the query. This allows for faster query performance because the data is precomputed and stored. However, they require additional storage and maintenance to keep the data up-to-date
+•	Materialized views are particularly useful for frequently accessed queries that involve complex calculations or aggregations
+Use Cases for Views
+•	Data Simplification: Views can simplify complex queries by breaking them down into more manageable parts.
+•	Security: By creating views that expose only specific columns or rows, you can control access to sensitive data.
+•	Modularity: Views promote code reusability and modularity, making it easier to manage and maintain SQL code.
+
+5.	Where data stores in sf?
+
+6.	Size of micro partition in sf?
+In Snowflake, data is automatically divided into micro-partitions, which are contiguous units of storage. Each micro-partition contains between 50 MB and 500 MB of uncompressed data. However, the actual size in Snowflake is smaller because the data is always stored in a compressed format. 
+Micro-partitions are designed to optimize performance and storage efficiency, enabling fine-grained data pruning and faster query execution
+
+7.	Zero copy cloning in sf?
+Zero-copy cloning in Snowflake is a powerful feature that allows you to create an exact copy of a database, schema, or table without duplicating the physical data. Here's how it works and its benefits:
+How Zero-Copy Cloning Works
+1.	Metadata-Based Cloning:
+•	When you create a clone, Snowflake generates new metadata for the clone that points to the same underlying micro-partitions as the original object.
+•	This means that the cloned object shares the data blocks with the original, and no additional storage space is consumed at the time of cloning.
+2.	Independent Clones:
+•	The clone is independent of the source object. Any changes made to the clone do not affect the source object and vice versa
+•	This allows for safe experimentation and testing without risking the integrity of the original data
+Benefits of Zero-Copy Cloning
+•	Efficiency: Cloning operations are fast and do not require additional storage space initially, making them highly efficient
+•	Cost-Effective: Since no additional storage is used at the time of cloning, it helps in reducing storage costs.
+•	Flexibility: You can create clones for various purposes such as testing, development, and backup without impacting the original data
+Use Cases
+•	Testing and Development: Create clones of production data for testing and development purposes without affecting the live data
+•	Data Analysis: Perform complex data analysis on cloned data to ensure that the original data remains unchanged
+•	Backup and Recovery: Use clones as a quick backup solution or for data recovery purposes
+8.	what is caches in snowflake? Different types of caches?
+In Snowflake, caching is a key feature designed to improve query performance and efficiency. There are three primary types of caches in Snowflake:
+1. Query Result Cache
+•	Description: Stores the results of queries that have been executed. If the same query is run again and the underlying data hasn't changed, Snowflake can return the results from this cache instead of re-executing the query.
+•	Duration: Cached results are stored for 24 hours by default, but this can be extended up to 31 days if the query is re-executed within that period.
+2. Metadata Cache
+•	Description: Stores metadata about tables, such as row counts, min/max values for columns, and other statistical information. This helps in quickly answering queries about the structure and statistics of the data without scanning the actual data.
+•	Usage: Used to optimize query planning and execution by providing quick access to table metadata.
+3. Virtual Warehouse Cache (Local Disk Cache)
+•	Description: Caches data that has been read from the storage layer during query execution. This cache is local to each virtual warehouse and helps speed up subsequent queries that access the same data.
+•	Persistence: The cache is cleared when the virtual warehouse is suspended. When the warehouse is resumed, the cache is rebuilt as queries are processed.
+Benefits of Caching in Snowflake
+•	Improved Performance: By reusing cached results and metadata, Snowflake can significantly reduce query execution times.
+•	Cost Efficiency: Reduces the need to repeatedly scan large datasets, thereby lowering compute costs.
+•	Scalability: Enhances the ability to handle high query loads by efficiently managing resources.
+
+9.	Multi cluster warehouse in sf ?
+A multi-cluster warehouse in Snowflake is designed to handle varying workloads by automatically scaling the number of compute clusters up or down based on demand. This feature is available in the Enterprise Edition and higher.
+Key Features of Multi-Cluster Warehouses
+1.	Dynamic Scaling:
+•	Auto-Scale Mode: Snowflake automatically starts and stops clusters as needed to manage the load. When the number of concurrent queries increases, additional clusters are started up to the maximum number defined. Conversely, when the load decreases, clusters are shut down to minimize costs.
+•	Maximized Mode: All clusters are started when the warehouse is initiated, providing maximum resources at all times. This mode is useful for consistently high workloads.
+2.	Concurrency Handling:
+•	Multi-cluster warehouses are particularly effective for improving query concurrency. They allow more users and queries to be processed simultaneously without performance degradation.
+3.	Cost Efficiency:
+•	By dynamically adjusting the number of clusters, Snowflake ensures that you only pay for the compute resources you actually use, optimizing cost efficiency.
+Benefits
+•	Improved Performance: Ensures that queries are processed efficiently even during peak times by providing additional compute resources as needed.
+•	Flexibility: Allows for seamless scaling to accommodate fluctuating workloads without manual intervention.
+•	Resource Optimization: Helps in managing costs by scaling down resources during off-peak times.
+Use Cases
+•	High Concurrency Workloads: Ideal for environments with a large number of concurrent users and queries, such as business intelligence and reporting platforms.
+•	Variable Workloads: Suitable for applications with fluctuating demand, ensuring optimal performance and cost management
+
+
+1.	Rank & dense rank difference
+2.	Window functions
+3.	Joins
+4.	Lpad rpad in sql
+
+
+
+
+
+
+1.Write a query to fetch values in table test_a that are and not in test_b without using the NOT keyword.
+test_a
+10
+20
+30
+40
+50
+ 
+test_b
+10
+30
+50
+
+2. If there are 10 records in the Emp table and 5 records in the Dept table, how many rows will be displayed in the result of the following SQL query:
+ 
+Select * From Emp, Dept
+ 
+
+3. Q1 - I need to write SQL Script Where India record first order by other country name.
+ 
+Country_Name
+-----------
+France
+China
+India
+Argentina
+Belgium
+ 
+Note: Dont need to use union all function?
+ 
+5.	What will be the output
+
+Table A        Table B
+ 
+1        1
+1        1
+1        1
+1        null
+null     
+ 
+  Inner Join : 9
+  Left Join :  6
+  RIght Join :
+  Full outer Join :
+ 
+ 
+
+Type	Availability	Time-Travel Retention period in days	Fail-Safe period in days
+Temporary	Remainder of session	0 or 1 (default is 1)	0
+Transient	Until explicitly dropped	0 or 1 (default is 1)	0
+Permanent( Standard Edition)	Until explicitly dropped	0 or 1 (default is 1)	7
+Permanent( Enterprise and higher Edition)	Until explicitly dropped	0 to 90 (default is configurable)	7
+
+
+
+
+
+1.Can you create one temp table as another permeant table? Temp table take precedence
+Copilot said:
+Yes, you can create a temporary table with the same name as an existing permanent table in Snowflake. When you do this, the temporary table will take precedence within the session, effectively hiding the permanent table for the duration of the session.
+Here’s how you can create a temporary table based on an existing permanent table:
+1.	Create the Permanent Table:
+2.	CREATE TABLE permanent_employee (
+3.	    id NUMBER,
+4.	    name VARCHAR(100),
+5.	    doj DATE
+6.	);
+7.	Create the Temporary Table:
+8.	CREATE TEMPORARY TABLE permanent_employee AS
+9.	SELECT * FROM permanent_employee;
+In this example, the temporary table permanent_employee is created with the same structure and data as the permanent table permanent_employee. Within the session, any reference to permanent_employee will point to the temporary table.
+Key Points:
+•	Temporary Table Precedence: The temporary table will take precedence over the permanent table within the session. Any operations performed on permanent_employee will affect the temporary table.
+•	Session Scope: The temporary table exists only for the duration of the session. Once the session ends, the temporary table is dropped automatically, and the permanent table becomes accessible again.
+
