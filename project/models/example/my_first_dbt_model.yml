@@ -1,0 +1,5 @@
+models:
+  - name: my_first_dbt_model
+    description: "A starter dbt model"
+    tests:
+      - test_id_positive
