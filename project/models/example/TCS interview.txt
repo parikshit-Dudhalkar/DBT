@@ -52,3 +52,188 @@ Chinmayee Lakkad
 2. https://quickstarts.snowflake.com/guide/getting_started_with_snowflake_notebooks/index.html?index=..%2F..index#2
 
 
+
+
+---------------------------------
+
+
+
+
+
+
+
+3+ years of professional IT expertise in SQL, data modeling, data analysis,ELT pipeline creation, workflow automation. Experienced in writing and optimizing complex SQL queries, 
+performance tuning, and maintaining data integrity. Skilled in creating and deploying DBT scripts, designing DAGs for workflow automation, 
+and managing CRM data pipelines in Snowflake. Proficient in Python for data manipulation and streamlining workflows, with a strong focus on enhancing
+data quality and operational efficiency. 
+Adept at collaborating with cross-functional teams to deliver actionable insights and impactful data-driven solutions. 
+
+
+
+
+oobtain aposition as a DataEngineer. Over 3+yearsofprofessional IT experience which includes Big Data Ecosystem.
+ Excellent experience with Large Volume data processing, Validation, Migration, ETL Tools, and Relational Database.
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+3+ years of professional IT expertise in SQL, data modeling, data analysis,ELT pipeline creation, writing and optimizing complex SQL statements, 
+performance tuning and maintaining data integrity. Strong understanding of creating and deploying DBT models, designing DAGs for workflow automation, 
+and managing CRM data pipelines in Snowflake. Proficient in Python for data manipulation and streamlining workflows, with a strong focus on enhancing
+data quality and operational efficiency. 
+Adept at collaborating with cross-functional teams to deliver actionable insights and impactful data-driven solutions. 
+ 
+ 
+ 
+ Personally Identifiable Information 
+ 
+ 
+ 
+Build, create and configure enterprise level Snowflake environments. Maintain, implement, and monitor Snowflake
+Environments.
+Hands-on experience with Snowflake utilities, Snowflake SQL, Snow Pipe, etc.
+Worked in Snowflake advanced concepts like setting up Resource Monitors, Role Based Access Controls, Data Sharing,
+Virtual Warehouse Sizing, Query Performance Tuning, Snow Pipe, Tasks, Streams, Zero- copy cloning etc.
+Created Snow pipe for continuous load data and used copy to bulk load the data.
+Created Internal, External stage and transformed data during load.
+Assisted to map existing data ingestion platform to AWS cloud stack for the enterprise cloud initiative.
+Used tools like IBM IJCD, GIT/GitHub for version control.
+Provide support for customer data warehouse data to serve analytical reporting for marketing, life sciences and various
+other user communities by accomplishing return to service and enhancements to process for consistent and timely data
+delivery.
+Develop processes for extracting, cleansing, transforming, integrating, and loading data into data warehouse database.
+ETL Development for Control Architecture, Common Modules, Sequence Controls, and major critical interfaces.
+
+"Wrestling & Entertainment Data Warehousing"
+
+
+Developed and optimized DBT models for transforming and managing marketing, PII (Personally Identifiable Information), sales, and consumer product data within the Media and Entertainment Industry, ensuring accurate and efficient data processing for business intelligence and analytical operations.
+
+Designed and implemented automated data workflows using Apache Airflow, improving pipeline efficiency by 40% and reducing manual intervention in the ELT process.
+
+Developed processes for extracting, cleansing, transforming, integrating, and loading data into the data warehouse, ensuring streamlined and reliable data pipelines.
+
+Collaborated with business teams to define required data fields, extracting and transforming JSON data into Snowflake, enhancing the accuracy and relevance of customer and sales insights.
+
+Created and executed YML test files for unit testing DBT models, ensuring data integrity through automated quality checks and identifying discrepancies early in the process.
+
+Troubleshot and resolved data quality issues, including duplicates and test failures, and performed performance tuning on models to ensure high-quality data processing.
+
+Proficient in debugging production jobs to resolve failures and ensure smooth operations, while optimizing model performance for efficient data workflows.
+
+Led the development of new features for DBT models, overseeing deployment processes, managing production deployments, and creating comprehensive deployment documentation, including client interactions and feedback integration.
+
+
+
+
+
+==
+
+3+ years of experience in Data Analysis, SQL development, Data Warehousing, and ELT pipeline creation, focusing on Snowflake and DBT for data transformation.
+
+Expertise in SQL for complex data solutions, performance tuning, and troubleshooting across Snowflake, MySQL, PostgreSQL, and MS SQL Server.
+
+Skilled in DBT for building, deploying, and automating data models, and managing ELT workflows using Apache Airflow (DAGs).
+
+Proficient in Python for enhancing data transformation, automating processes, and streamlining data pipelines.
+
+Collaborated with business teams and end users to define, formulate, and document business requirements, ensuring data solutions aligned with organizational needs.
+
+Experienced in utilizing Jinja templates to create dynamic and reusable DBT models, developing custom macros to streamline SQL queries, and managing seed files to load static data efficiently into the data warehouse.
+
+Implemented incremental loading strategies for large datasets, improving data pipeline efficiency by up to 40% by processing and updating only new or modified records. Additionally, implemented SCD Type 2 tables to track historical data changes while maintaining data accuracy.
+
+
+
+Strength and weeknesss
+
+Critical condition
+
+how you see yourself in 5 years and then 10 years
+===============================================================
+
+T.C.S 
+
+
+1. More about SCD2 with example and how to implement 
+--> Here is scd type 2 we track historical data changes. For example if some record in dimenion table changes then it will track the changes and update the records keeping the history as well.
+
+
+2. Dimensions and facts 
+--> Dimension are non numerical data which we store in tables such as name, address, etc. and fact data are those data that contain numerical values such are purchase price
+
+
+3. Snowflake Architecture
+--> Its a 3 tier architecture with storage layer, query processing layer and cloud service layer 
+
+
+4. vertical scaling and horizontal scaling 
+--> In snowflake vertical scaling means we will increase size of virtual warehouse by adding more compute resources, and in horizontal scaling we will increase no. of virtual warehouse.
+
+
+5. Zero copy cloning real time example also more about that 
+--> It allows to Instantly clone the tables, schema, database because it doesn't actually copy the physical data . It takes pointer to original data in the storage layer.
+--   When any changes happen it create new storage block for the changes and for remaining records it will still point towards original location
+--  use case -- we can create clones of production database for testing purpose without impacting original data.
+
+6. snowpipe working 
+
+
+7. 
+
+   A     B 
+   1  	 1
+   2 	 1
+   3   	 2
+   5     4
+  null   null 
+  null
+
+
+8.  Data retrival using time travel examples.
+--> 
+
+
+9.  How to check who drop create table into snowflake.
+
+
+10. Surrogate key. 
+--> It a unique key like an identifier 
+
+
+11. How time travel is different for different edition also describe fail safe.
+
+
+12. How You have implement ETL in your project.
+
+
+13. SQL question with timestamp 
+
+14. Any GenAI implementation
+
+15. View vs Secure view 
+
+hobbies
+tell me which is not mentioned in cv
+
+why SWITCH
+
+How will you handle if your junior is performing low and there is deadline 
+
+--> Lack of clarity on the task or expectations.
+	Personal issues or stress affecting their work.
+	Skills gap 
+
+
+UAN
+101772655213
+Darsh@121
+
+
+ 
