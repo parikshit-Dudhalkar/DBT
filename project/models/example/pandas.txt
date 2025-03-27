@@ -1,0 +1,236 @@
+Here’s the revised list with `# ` for code comments and `# ` for explanations:
+
+# -
+
+# 1. Creating DataFrames# :
+# python
+df = pd.DataFrame({'A': [1, 2], 'B': [3, 4]}) #  Create a DataFrame from a dictionary.
+# 
+
+# 2. Reading Data# :
+   - # CSV# :
+     # python
+     df = pd.read_csv('file.csv') #  Read a CSV file into a DataFrame.
+     # 
+   - # Excel# :
+     # python
+     df = pd.read_excel('file.xlsx') #  Read an Excel file into a DataFrame.
+     # 
+   - # JSON# :
+     # python
+     df = pd.read_json('file.json') #  Read a JSON file into a DataFrame.
+     # 
+
+# 3. Writing Data# :
+   - # CSV# :
+     # python
+     df.to_csv('file.csv', index=False) #  Write DataFrame to a CSV file.
+     # 
+   - # Excel# :
+     # python
+     df.to_excel('file.xlsx', index=False) #  Write DataFrame to an Excel file.
+     # 
+   - # JSON# :
+     # python
+     df.to_json('file.json') #  Write DataFrame to a JSON file.
+     # 
+
+# 4. Viewing Data# :
+   - # Head# :
+     # python
+     df.head() #  View the first 5 rows of the DataFrame.
+     # 
+   - # Tail# :
+     # python
+     df.tail() #  View the last 5 rows of the DataFrame.
+     # 
+   - # Info# :
+     # python
+     df.info() #  Get a concise summary of the DataFrame.
+     # 
+
+# 5. Selecting Data# :
+   - # By Column# :
+     # python
+     df['A'] #  Select column 'A'.
+     # 
+   - # By Row (Indexing)# :
+     # python
+     df.iloc[0] #  Select the first row by index.
+     # 
+   - # By Label# :
+     # python
+     df.loc[0] #  Select the row with label 0.
+     # 
+
+# 6. Filtering Data# :
+# python
+df[df['A'] > 1] #  Filter rows where column 'A' is greater than 1.
+# 
+
+# 7. Handling Missing Data# :
+   - # Drop# :
+     # python
+     df.dropna() #  Drop rows with missing values.
+     # 
+   - # Fill# :
+     # python
+     df.fillna(0) #  Fill missing values with 0.
+     # 
+   - # Replace# :
+     # python
+     df.replace(np.nan, 0) #  Replace NaN with 0.
+     # 
+
+# 8. Sorting Data# :
+   - # By Values# :
+     # python
+     df.sort_values(by='A') #  Sort DataFrame by column 'A'.
+     # 
+   - # By Index# :
+     # python
+     df.sort_index() #  Sort DataFrame by index.
+     # 
+
+# 9. Grouping Data# :
+# python
+df.groupby('A').sum() #  Group by column 'A' and sum other columns.
+# 
+
+# 10. Aggregating Data# :
+# python
+df.agg({'A': 'sum', 'B': 'mean'}) #  Aggregate columns 'A' and 'B'.
+# 
+
+# 11. Merging DataFrames# :
+# python
+pd.merge(df1, df2, on='key') #  Merge DataFrames on a common key.
+
+merged_df = pd.merge(df1, df2, left_on='id1', right_on='id2', how='inner')
+
+# 
+
+# 12. Concatenating DataFrames# :
+# python
+pd.concat([df1, df2]) #  Concatenate DataFrames vertically.
+# 
+
+# 13. Pivot Tables# :
+# python
+df.pivot_table(values='B', index='A', aggfunc='mean') #  Create a pivot table.
+# 
+
+# 14. Applying Functions# :
+# python
+df['A'].apply(lambda x: x + 1) #  Apply a function to column 'A'.
+# 
+
+# 15. Resetting Index# :
+# python
+df.reset_index(drop=True) #  Reset the index of the DataFrame.
+# 
+
+# 16. Setting Index# :
+# python
+df.set_index('A') #  Set column 'A' as the index.
+# 
+
+# 17. DataFrame Info# :
+# python
+df.info() #  Get a concise summary of the DataFrame.
+# 
+
+# 18. Descriptive Statistics# :
+# python
+df.describe() #  Get descriptive statistics of numerical columns.
+# 
+
+# 19. Changing Data Types# :
+# python
+df['A'] = df['A'].astype(float) #  Change the data type of column 'A'.
+# 
+
+# 20. Indexing with `iloc`# :
+# python
+df.iloc[1:3, 0:2] #  Select rows 1 to 2 and columns 0 to 1 by integer-location based indexing.
+# 
+
+# 21. Indexing with `loc`# :
+# python
+df.loc[0:2, 'A':'B'] #  Select rows 0 to 2 and columns 'A' to 'B' by label-based indexing.
+# 
+
+# 22. MultiIndex# :
+# python
+df.set_index(['A', 'B']) #  Set multiple columns as the index.
+# 
+
+# 23. Resampling# :
+# python
+df.resample('M').sum() #  Resample time-series data by month and sum.
+# 
+
+# 24. Applying Functions to Rows/Columns# :
+# python
+df.apply(lambda x: x.max() - x.min(), axis=0) #  Apply a function along columns.
+# 
+
+# 25. Element-wise Operations# :
+# python
+df + 10 #  Add 10 to each element in the DataFrame.
+# 
+
+# 26. String Operations# :
+# python
+df['A'].str.lower() #  Convert strings in column 'A' to lowercase.
+# 
+
+# 27. Date and Time Operations# :
+# python
+df['date'] = pd.to_datetime(df['date']) #  Convert column to datetime.
+# 
+
+# 28. Sampling# :
+# python
+df.sample(3) #  Randomly sample 3 rows from the DataFrame.
+# 
+
+# 29. Dropping Columns/Rows# :
+   - # Columns# :
+     # python
+     df.drop('B', axis=1) #  Drop column 'B'.
+     # 
+   - # Rows# :
+     # python
+     df.drop(0, axis=0) #  Drop row with index 0.
+     # 
+
+# 30. Crosstab# :
+# python
+pd.crosstab(df['A'], df['B']) #  Create a cross-tabulation of two columns.
+# 
+
+# 31. Applying Aggregations# :
+# python
+df.groupby('A').agg({'B': ['sum', 'mean']}) #  Aggregate column 'B' with sum and mean for each group in 'A'.
+# 
+
+# 32. Memory Usage# :
+# python
+df.memory_usage() #  Get memory usage of DataFrame.
+# 
+
+# 33. Exploding Lists# :
+# python
+df['B'] = df['B'].apply(lambda x: [int(i) for i in x.split()]) #  Convert strings to lists, then explode.
+df.explode('B') #  Flatten lists in column 'B'.
+# 
+
+# 34. Combining DataFrames# :
+# python
+df.combine_first(other_df) #  Combine two DataFrames, filling missing values from the other DataFrame.
+# 
+
+# -
+
+You can copy and use this information as needed!

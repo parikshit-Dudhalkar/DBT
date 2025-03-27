@@ -1,0 +1,2392 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------
+===============================================                                             =======================================================
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Consider  and  to be two points on a 2D plane where  are the respective minimum and maximum values of Northern Latitude (LAT_N)
+and  are the respective minimum and maximum values of Western Longitude (LONG_W) in STATION.
+
+Query the Euclidean Distance between points  and  and format your answer to display  decimal digits.
+
+
+STATION TABLE:
+
++------------+--------------+
+| FIELD      | DATA TYPE    |
++------------+--------------+
+| ID		 | NUMBER	    |
+| CITY       | VARCHAR2 (21)|
+| STATE      | VARCHAR2 (2) |
+| LAT N      | NUMBER       |
+| LONG W     | NUMBER       |
+| STATION    | NUMBER       |
++------------+--------------+
+
+select round(sqrt(power(max(LAT_N) - min(LAT_N), 2) + power(max(LONG_W) - min(LONG_W), 2)), 4)
+FROM STATION;
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------                                             -------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+TABLE
++------------+-------------+
+| Column     | Type        |
++------------+-------------+
+| Name       | String      |
+| Occupation | String      |
++------------+-------------+
+SAMPLE DATA
++------------+------------+
+| Name       | Occupation |
++------------+------------+
+| Samantha   | Doctor     |
+| Julia      | Actor      |
+| Maria      | Actor      |
+| Meera      | Singer     |
+| Ashely     | Professor  |
+| Ketty      | Professor  |
+| Christeen  | Professor  |
+| Jane       | Actor      |
++------------+------------+
+
+OUTPUT
++---------------------------------------+
+| Data                                  |
++---------------------------------------+
+| Ashely (P)                            |
+| Christeen (P)                         |
+| Jane (A)                              |
+| Jenny (D)                             |
+| Julia (A)                             |
+| Ketty (P)                             |
+| Maria (A)                             |
+| Meera (S)                             |
+| Priya (S)                             |
+| Samantha (D)                          |
+| There are a total of 2 doctors.       |
+| There are a total of 2 singers.       |
+| There are a total of 3 actors.        |
+| There are a total of 3 professors.    |
++---------------------------------------+
+
+
+select concat(Name, '(',upper(substring(occupation,1,1)),')') as Name_with_profession from occupations
+union all
+select concat('There are a total of ', count(*),' ',lower(occupation),'s.')  as Name_with_profession from occupations group by occupation 
+order by Name_with_profession
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------                                             -------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+You are given a table, Projects, containing three columns: Task_ID, Start_Date and End_Date. It is guaranteed that the difference between the End_Date and the Start_Date is equal to 1 day for each row in the table.
+If the End_Date of the tasks are consecutive, then they are part of the same project. Samantha is interested in finding the total number of different projects completed.
+Write a query to output the start and end dates of projects listed by the number of days it took to complete the project in ascending order. If there is more than one project that have the same number of completion days, 
+then order by the start date of the project.
+
+
++------------+-------------+
+| Column     | Type        |
++------------+-------------+
+| Task_ID    | Integer     |
+| Start_Date | Date        |
+| End_Date   | Date        |
++------------+-------------+
+
++---------+------------+------------+
+| Task_ID | Start_Date | End_Date   |
++---------+------------+------------+
+| 1       | 2015-10-01 | 2015-10-02 |
+| 2       | 2015-10-02 | 2015-10-03 |
+| 3       | 2015-10-03 | 2015-10-04 |
+| 4       | 2015-10-13 | 2015-10-14 |
+| 5       | 2015-10-24 | 2015-10-15 |
+| 6       | 2015-10-28 | 2015-10-29 |
+| 7       | 2015-10-30 | 2015-10-31 |
++---------+------------+------------+
+
+
+
+
+ 
+  with cte as 
+  ( select start_date from projects where start_Date not in (select end_Date from projects)),
+     
+  cte2 as 
+	(  select end_Date from projects where end_date not in (select start_Date from projects))
+    
+	select start_date,min(end_date) from cte,cte2 where start_date< end_date 
+    group by start_date
+    order by datediff(day,start_Date,min(end_Date)),start_date
+
+
+SELECT Start_Date, min(End_Date)
+FROM 
+ (SELECT Start_Date FROM Projects WHERE Start_Date NOT IN (SELECT End_Date FROM Projects)) a ,
+ (SELECT End_Date FROM Projects WHERE End_Date NOT IN (SELECT Start_Date FROM Projects)) b
+WHERE Start_Date < End_Date
+GROUP BY Start_Date
+ORDER BY DATEDIFF(day, Start_Date,min(End_Date)) ASC, Start_Date ASC;
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------                                             -------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+You are given a table, BST, containing two columns: N and P, where N represents the value of a node in Binary Tree, and P is the parent of N.
+Write a query to find the node type of Binary Tree ordered by the value of the node. Output one of the following for each node:
+
+Root: If node is root node.
+Leaf: If node is leaf node.
+Inner: If node is neither root nor leaf node.
+
+
+
++---------+---------+
+| Column  | Type    |
++---------+---------+
+| N 	  | Integer |
+| P       | Integer |
++---------+---------+
+
+
+
++---------+---------+
+|    N    |  P      |
++---------+---------+
+|   1     |2        |
+|	3     |2        |
+|	6     |8        |
+|	9     |8        |
+|	2     |5        |
+|	8     |5        |
+|	5     |null     |
++---------+---------+
+
+
+		SELECT N, CASE WHEN P IS NULL THEN 'Root'
+					   WHEN  N  in (SELECT P FROM BST) THEN 'Inner'
+					   ELSE 'Leaf'
+					   END
+					  
+			FROM BST 
+			ORDER BY N
+			
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------                                             -------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+Amber's conglomerate corporation just acquired some new companies. Each of the companies follows this hierarchy:
+
+Given the table schemas below, write a query to print the company_code, founder name, total number of lead managers, total number of senior managers, total number of managers, and total number of employees. Order your output by ascending company_code.
+
+
+FOUNDER
+LEAD MANAGER
+SENIOR MANAGER
+MANAGER
+EMPLOYEE
+Note:
+
+The tables may contain duplicate records.
+The company_code is string, so the sorting should not be numeric. For example, if the company_codes are C_1, C_2, and C_10, then the ascending company_codes will be C_1, C_10, and C_2.
+
+		SELECT C.COMPANY_CODE, C.FOUNDER, COUNT(DISTINCT L.LEAD_MANAGER_CODE), COUNT(DISTINCT S.SENIOR_MANAGER_CODE),
+		COUNT(DISTINCT M.MANAGER_CODE), COUNT(DISTINCT E.EMPLOYEE_CODE)
+
+		FROM COMPANY C  JOIN LEAD_MANAGER L
+		ON C.COMPANY_CODE = L.COMPANY_CODE
+
+		 JOIN SENIOR_MANAGER S ON L.LEAD_MANAGER_CODE = S.LEAD_MANAGER_CODE
+
+		JOIN  MANAGER M ON S.SENIOR_MANAGER_CODE = M.SENIOR_MANAGER_CODE
+
+		JOIN EMPLOYEE E ON M.MANAGER_CODE=E.MANAGER_CODE
+
+		GROUP BY C.COMPANY_CODE, C.FOUNDER
+		ORDER BY C.COMPANY_CODE
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------                                             -------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+You are given two tables: Students and Grades. Students contains three columns ID, Name and Marks.
+
++---------+--------+
+| COLUMN  | TYPE   |
++---------+--------+
+| ID      | integer|
+| NAME    | string |
+| MARKS   | Integer|
++---------+--------+
+
+
++---------+-----------+-----------+
+|  Grade  | Min_Mark  | Max_Mark  |
++---------+-----------+-----------+
+|	1	  |		0	  |	   9      |
+|   2     |    10     |    19     |
+|   3     |    20     |    29     |
+|   4     |    30     |    39     |
+|   5     |    40     |    49     |
+|   6     |    50     |    59     |
+|   7     |    60     |    69     |
+|   8     |    70     |    79     |
++---------+-----------+-----------+
+
+SELECT 
+CASE WHEN G.GRADE < 8 THEN NULL ELSE S.NAME END ,G.GRADE , S.MARKS FROM STUDENTS AS S INNER JOIN GRADES AS G
+ON S.MARKS <= G.MAX_MARK AND S.MARKS >= G.MIN_MARK
+ORDER  BY G.GRADE DESC ,S.NAME ASC, S.MARKS
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------                                             -------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+This is the same question as problem #10 in the SQL Chapter of Ace the Data Science Interview!
+
+Given a table of tweet data over a specified time period, calculate the 3-day rolling average of tweets for each user. Output the user ID, tweet date, and rolling averages rounded to 2 decimal places.
+
+Notes:
+
+A rolling average, also known as a moving average or running mean is a time-series technique that examines trends in data over a specified period of time.
+In this case, we want to determine how the tweet count for each user changes over a 3-day period.
+Effective April 7th, 2023, the problem statement, solution and hints for this question have been revised.
+
++----------+---------------------+-------------+
+| user_id  | tweet_date          | tweet_count |
++----------+---------------------+-------------+
+| Integer  | Timestamp           | Integer     |
++----------+---------------------+-------------+
+
+| user_id  | tweet_date          | tweet_count |
++----------+---------------------+-------------+
++----------+---------------------+-------------+
+|   111    | 06/01/2022 00:00:00 |      2      |
+|   111    | 06/02/2022 00:00:00 |      1      |
+|   111    | 06/03/2022 00:00:00 |      3      |
+|   111    | 06/04/2022 00:00:00 |      4      |
+|   111    | 06/05/2022 00:00:00 |      5      |
++----------+---------------------+-------------+
++----------+---------------------+	----------------+
+| user_id  | tweet_date          | rolling_avg_3d |
++----------+---------------------+----------------+
+|   111    | 06/01/2022 00:00:00 |       2.00     |
+|   111    | 06/02/2022 00:00:00 |       1.50     |
+|   111    | 06/03/2022 00:00:00 |       2.00     |
+|   111    | 06/04/2022 00:00:00 |       2.67     |
+|   111    | 06/05/2022 00:00:00 |       4.00     |
++----------+---------------------+----------------+
+
+select user_id , tweet_date, 
+round(avg(tweet_count) over(partition by user_id order by tweet_date rows BETWEEN 2 preceding and current row ),2) from tweets
+order by user_id,tweet_date
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------                                             -------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Companies often perform salary analyses to ensure fair compensation practices. One useful analysis is to check if there are any employees earning more than their direct managers.
+
+As a HR Analyst, you're asked to identify all employees who earn more than their direct managers. The result should include the employee's ID and name.
+
++----------------+---------+-------------------------------------------+
+|  column_name   |   type  |                description                |
++----------------+---------+-------------------------------------------+
+|  employee_id   | integer | The unique ID of the employee.            |
+|  name          | string  | The name of the employee.                 |
+|  salary        | integer | The salary of the employee.               |
+|  department_id | integer | The department ID of the employee.        |
+|  manager_id    | integer | The manager ID of the employee.           |
++----------------+---------+-------------------------------------------+
+
+
+
+
++-------------+------------------+--------+--------------+------------+
+| employee_id | name             | salary | department_id | manager_id |
++-------------+------------------+--------+--------------+------------+
+|      1      | Emma Thompson     |  3800  |      1       |     6      |
+|      2      | Daniel Rodriguez  |  2230  |      1       |     7      |
+|      3      | Olivia Smith      |  7000  |      1       |     8      |
+|      4      | Noah Johnson      |  6800  |      2       |     9      |
+|      5      | Sophia Martinez   |  1750  |      1       |    11      |
+|      6      | Liam Brown        | 13000  |      3       |   NULL     |
+|      7      | Ava Garcia        | 12500  |      3       |   NULL     |
+|      8      | William Davis     |  6800  |      2       |   NULL     |
++-------------+------------------+--------+--------------+------------+
++-------------+------------------+
+| employee_id | employee_name     |
++-------------+------------------+
+|      3      | Olivia Smith      |
++-------------+------------------+
+
+
+select e.employee_id,e.name from employee e join employee ee on e.manager_id=ee.employee_id
+where e.salary > ee.salary
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------                                             -------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+Can we concat 2 different data types in sql
+yes by using cocat we can achieve this and also by using And operator
+- -- Example: Concatenating a string with an integer
+SELECT CONCAT('The total amount is: ', 12345) AS Result;
+SELECT CONCAT('The user ID is: ', CAST(6789 AS TEXT)) AS Result;
+
+Use of USE in sql 
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------                                             -------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+This is the same question as problem #6 in the SQL Chapter of Ace the Data Science Interview!
+
+Assume you're given a table Twitter tweet data, write a query to obtain a histogram of tweets posted per user in 2022. Output the tweet count per user as the bucket and the number of Twitter users who fall into that bucket.
+
+In other words, group the users by the number of tweets they posted in 2022 and count the number of users in each group.
+
+tweets Table:
+		Column Name	Type
+		tweet_id	integer
+		user_id	integer
+		msg	string
+		tweet_date	timestamp
+		
+tweets Example Input:
+tweet_id	user_id	msg	tweet_date
+214252	111	Am considering taking Tesla private at $420. Funding secured.	12/30/2021 00:00:00
+739252	111	Despite the constant negative press covfefe	01/01/2022 00:00:00
+846402	111	Following @NickSinghTech on Twitter changed my life!	02/14/2022 00:00:00
+241425	254	If the salary is so competitive why won’t you tell me what it is?	03/01/2022 00:00:00
+231574	148	I no longer have a manager. I can't be managed	03/23/2022 00:00:00
+
+Example Output:
+
+			tweet_bucket	users_num
+				1				2
+				2				1
+
+Answer -->
+			with cte as (
+						select user_id,count(tweet_id)  as tweet_bucket from tweets where extract(year from tweet_date)=2022 
+						group by user_id)
+			select tweet_bucket , count(user_id) user_num from  cte group by tweet_bucket
+			
+			
+			
+---------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------                                             -------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+			
+Given a table of candidates and their skills, you're tasked with finding the candidates best suited for an open Data Science job. You want to find candidates who are proficient in Python, Tableau, and PostgreSQL.
+
+Write a query to list the candidates who possess all of the required skills for the job. Sort the output by candidate ID in ascending order.
+
+Assumption:
+
+There are no duplicates in the candidates table.
+candidates Table:
+Column Name	Type
+candidate_id	integer
+skill	varchar
+candidates Example Input:
+		candidate_id	skill
+		  123           Python
+		  123           Tableau
+		  123           PostgreSQL
+		  234           R
+		  234           PowerBI
+		  234           SQL Server
+		  345           Python
+		  345           Tableau
+		  
+		Example Output:
+		candidate_id
+		123
+
+
+-- SELECT * FROM candidates;
+with cte as(
+SELECT candidate_id,skill from candidates
+where skill='Python' or skill='Tableau'  or  
+skill='PostgreSQL')
+
+select candidate_id from cte 
+group by candidate_id
+having count(skill)=3
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------                                             -------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+Select Start_Date, MIN(End_Date)
+From
+    (Select b.Start_Date
+    From Projects as a
+    RIGHT Join Projects as b
+    ON b.Start_Date = a.End_Date
+    WHERE a.Start_Date IS NULL
+    ) sd,
+    (Select a.End_Date
+    From Projects as a
+    Left Join Projects as b
+    ON b.Start_Date = a.End_Date
+    WHERE b.End_Date IS NULL
+    ) ed
+Where Start_Date < End_Date
+GROUP BY Start_Date
+ORDER BY datediff(MIN(End_Date), Start_Date), Start_Date
+
+A						B
+
+1 2						1	2
+2 3						2	3
+3 4						3	4
+4 5						4	5		
+		
+1		null 
+2
+3
+4
+
+2
+3
+4	null
+5	null
+
+
+
+WITH CTE AS (
+    SELECT
+        Start_Date,
+        End_Date,
+        DATEADD(day, - ROW_NUMBER() OVER(ORDER BY Start_Date), Start_Date) as Grouping
+    FROM Projects
+)ate),
+    
+SELECT from cte 
+GROUP BY Grouping
+    MIN(Start_Date),
+    MAX(End_D
+ORDER BY DATEDIFF(day, MIN(Start_Date), MAX(End_Date)), MIN(Start_Date)
+
+Subquery:=
+/ * QUESTION: Find stores whos sales where better than the average sales accross all stores
+1) find the total sales for leach store.
+2) find avg sales for all the stores.
+3) compare 1 & 2
+
+select *
+	from (select store_name, sum(price) as total_sales
+	from sales
+	group by store_name) sales
+join (select avg(total_sales) as sales
+	from (select store_name, sum(price) as total_sales
+	from sales
+group by store_name) x) avg_sales
+on sales. total_sales > avg_sales.sales;
+
+IMP * Subquery can be used in SQL Query, Insert, Update, Delete operation
+==>
+
+	insert into employee_history
+		select e.emp_id, e.emp_name, d.dept_name, e.salary, d.location
+		from employee e
+		join department d on d.dept_name = e. dept_name
+		where not exists (select 1
+		from emplyee_history eh
+		where eh.emp_id
+		e. emp_id);
+		
+		-----------------------------------------------
+		
+ WITH cte AS (
+    SELECT
+        *,
+        CASE
+            WHEN brand_category IS NULL THEN 0
+            ELSE 1
+        END AS nn,
+        ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS rn
+    FROM brand_chocolates
+),
+cte2 AS (
+    SELECT
+        brand_category,
+        chocolates,
+        SUM(nn) OVER (ORDER BY rn) AS m,
+        rn
+    FROM cte
+)
+SELECT
+    FIRST_VALUE(brand_category) OVER (PARTITION BY m ORDER BY rn) AS category,
+    chocolates
+FROM cte2;
+---------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+with cte as(
+   SELECT
+        *,
+
+        ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS rn
+    FROM brand_chocolates
+),
+  cte2 as(          select *,count(brand_category)  over(order by rn) as rn1 from cte)
+
+          select first_value(brand_category ) over(partition by rn1 order by rn ) as rn,chocolates from cte2
+
+with cte as (
+select  sname,sid,marks, rank() over (partition by sname) from table )
+select sname,sum(distinct marks) where rank in (1,2) from cte
+
+select name from employee e1 where (select count(*) from employee e2 where e1.departmentid=e2.departmentid)
+
+SELECT * from employee e join (select avg(salary) asl from employee) avg_sal
+on e.salary > = avg_sal.asl
+
+update employee e
+set salary =
+
+where
+
+--------------------
+	with recursive cte as (
+	select 1 as n
+	union all
+	select n+1 from cte where n<10
+
+	)
+
+--------------------
+
+with cte as (
+select * from employee e
+union all
+select * from cte c join employee  ee on c.employeeid=ee.managerid
+
+)
+
+--------------------
+
+create or replace TRIGGER t1
+
+before delete maintable
+for each row
+begin
+insert into backuptable values(:old.id,:old.salary)
+
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+
+select *,
+case when s.id
+ from students s
+ inner join friends f s.id=f.id
+inner join package p on s.id=p.id
+
+where p.salary < (select p.salary from package p where p.id=f.friend_id )
+
+----------------------------------------------------------------------
+
+=
+
+--------------------------------------------------------------------------
+
+CREATE TABLE STUDENT (STUDENTID INT , COURSEID INT,ENROLLMENTYEAR INT );
+
+INSERT INTO STUDENT (STUDENTID,COURSEID,ENROLLMENTYEAR)	VALUES (),(),();
+
+INSERT INTO STUDENT_NEW SELECT 	* FROM STUDENT;
+
+SELECT * INTO TABLE STUDENT_NEW FROM STUDENT
+-----------------=
+=========================
+
+DROP TABLE employee_history;
+
+DROP TABLE EMPLOYEE;
+
+drop table department;
+
+DROP table sales ;
+
+create table department
+
+(
+
+dept_id int ,
+
+dept_name varchar(50) PRIMARY KEY,
+
+location varchar(100)
+
+);
+
+insert into department values (1, 'Admin', 'Bangalore');
+insert into department values (2, 'HR', 'Bangalore');
+insert into department values (3, 'IT', 'Bangalore');
+insert into department values (4, 'Finance', 'Mumbai');
+insert into department values (5, 'Marketing', 'Bangalore');
+insert into department values (6, 'Sales', 'Mumbai');
+
+CREATE TABLE EMPLOYEE
+
+(
+    EMP_ID      INT PRIMARY KEY,
+    EMP_NAME    VARCHAR(50) NOT NULL,
+    DEPT_NAME   VARCHAR(50) NOT NULL,
+    SALARY      INT,
+    constraint fk_emp foreign key(dept_name) references department(dept_name)
+);
+
+insert into employee values(101, 'Mohan', 'Admin', 4000);
+insert into employee values(102, 'Rajkumar', 'HR', 3000);
+insert into employee values(103, 'Akbar', 'IT', 4000);
+insert into employee values(104, 'Dorvin', 'Finance', 6500);
+insert into employee values(105, 'Rohit', 'HR', 3000);
+insert into employee values(106, 'Rajesh',  'Finance', 5000);
+insert into employee values(107, 'Preet', 'HR', 7000);
+insert into employee values(108, 'Maryam', 'Admin', 4000);
+insert into employee values(109, 'Sanjay', 'IT', 6500);
+insert into employee values(110, 'Vasudha', 'IT', 7000);
+insert into employee values(111, 'Melinda', 'IT', 8000);
+insert into employee values(112, 'Komal', 'IT', 10000);
+insert into employee values(113, 'Gautham', 'Admin', 2000);
+insert into employee values(114, 'Manisha', 'HR', 3000);
+insert into employee values(115, 'Chandni', 'IT', 4500);
+insert into employee values(116, 'Satya', 'Finance', 6500);
+insert into employee values(117, 'Adarsh', 'HR', 3500);
+insert into employee values(118, 'Tejaswi', 'Finance', 5500);
+insert into employee values(119, 'Cory', 'HR', 8000);
+insert into employee values(120, 'Monica', 'Admin', 5000);
+insert into employee values(121, 'Rosalin', 'IT', 6000);
+insert into employee values(122, 'Ibrahim', 'IT', 8000);
+insert into employee values(123, 'Vikram', 'IT', 8000);
+insert into employee values(124, 'Dheeraj', 'IT', 11000);
+
+==========================================================================
+-------------------------------------------------------------------------
+CREATE TABLE employee_history
+(    emp_id      INT PRIMARY KEY,
+    emp_name    VARCHAR(50) NOT NULL,
+    dept_name   VARCHAR(50),
+    salary      INT,
+    location    VARCHAR(100),
+    constraint fk_emp_hist_01 foreign key(dept_name) references department(dept_name),
+    constraint fk_emp_hist_02 foreign key(emp_id) references employee(emp_id)
+);
+
+create table sales
+(store_id   int,
+store_name   varchar(50),
+product_name varchar(50),
+quantity int,
+price       int
+);
+
+insert into sales values
+(1, 'Apple Store 1','iPhone 13 Pro', 1, 1000),
+(1, 'Apple Store 1','MacBook pro 14', 3, 6000),
+(1, 'Apple Store 1','AirPods Pro', 2, 500),
+(2, 'Apple Store 2','iPhone 13 Pro', 2, 2000),
+(3, 'Apple Store 3','iPhone 12 Pro', 1, 750),
+(3, 'Apple Store 3','MacBook pro 14', 1, 2000),
+(3, 'Apple Store 3','MacBook Air', 4, 4400),
+(3, 'Apple Store 3','iPhone 13', 2, 1800),
+(3, 'Apple Store 3','AirPods Pro', 3, 750),
+(4, 'Apple Store 4','iPhone 12 Pro', 2, 1500),
+(4, 'Apple Store 4','MacBook pro 16', 1, 3500);
+
+select * from employee;
+
+select * from department;
+
+select * from employee_history;
+
+select * from sales;
+
+-- INTRO
+
+--------------------------------------------------------------------------------
+
+/* < WHAT IS SUBQUERIES? Sample subquery. How SQL processes this statement containing subquery? > */
+
+/* QUESTION: Find the employees who's salary is more than the average salary earned by all employees. */
+
+-- 1) find the avg salary
+
+-- 2) filter employees based on the above avg salary
+
+select * from employee e
+where salary > (select avg(salary) from employee)
+order by e.salary;
+
+-- TYPES OF SUBQUERY
+
+--------------------------------------------------------------------------------
+
+/* < SCALAR SUBQUERY > */
+/* QUESTION: Find the employees who earn more than the average salary earned by all employees. */
+-- it return exactly 1 row and 1 column
+
+select *
+from employee e
+where salary > (select avg(salary) from employee)
+order by e.salary;
+------------------------------------------------------------------
+select e.*, round(avg_sal.sal,2) as avg_salary
+from employee e
+join (select avg(salary) sal from employee) avg_sal
+on e.salary > avg_sal.sal;
+
+--------------------------------------------------------------------------------
+
+/* < MULTIPLE ROW SUBQUERY > */
+
+-- Multiple column, multiple row subquery
+
+/* QUESTION: Find the employees who earn the highest salary in each department. */
+
+1) find the highest salary in each department.
+
+2) filter the employees based on above result.
+
+select *
+from employee e
+where (dept_name,salary) in (select dept_name, max(salary) from employee group by dept_name)
+order by dept_name, salary;
+
+-- Single column, multiple row subquery
+
+/* QUESTION: Find department who do not have any employees */
+
+1) find the departments where employees are present.
+
+2) from the department table filter out the above results.
+
+select *
+from department
+where dept_name not in (select distinct dept_name from employee);
+
+--------------------------------------------------------------------------------
+
+/* < CORRELATED SUBQUERY >
+
+-- A subquery which is related to the Outer query
+
+/* QUESTION: Find the employees in each department who earn more than the average salary in that department. */
+
+1) find the avg salary per department
+
+2) filter data from employee tables based on avg salary from above result.
+
+select *
+from employee e
+where salary > (select avg(salary) from employee e2 where e2.dept_name=e.dept_name)
+order by dept_name, salary;
+
+/* QUESTION: Find department who do not have any employees */
+
+-- Using correlated subquery
+
+select *
+from department d
+where not exists (select 1 from employee e where e.dept_name = d.dept_name)
+
+--------------------------------------------------------------------------------
+
+/* < SUBQUERY inside SUBQUERY (NESTED Query/Subquery)> */
+
+/* QUESTION: Find stores who's sales where better than the average sales accross all stores */
+
+1) find the sales for each store
+
+2) average sales for all stores
+
+3) compare 2 with 1
+
+-- Using multiple subquery
+
+	select *
+
+		from (select store_name, sum(price) as total_sales
+
+		from sales
+
+		group by store_name) sales
+
+		join (select avg(total_sales) as avg_sales
+
+			from (select store_name, sum(price) as total_sales
+
+			  from sales
+
+			  group by store_name) x
+
+			) avg_sales
+
+	on sales.total_sales > avg_sales.avg_sales;
+
+-- Using WITH clause
+
+with sales as
+
+(select store_name, sum(price) as total_sales
+
+from sales
+
+group by store_name)
+
+select *
+
+from sales
+
+join (select avg(total_sales) as avg_sales from sales) avg_sales
+
+on sales.total_sales > avg_sales.avg_sales;
+
+-- CLAUSES WHERE SUBQUERY CAN BE USED
+
+--------------------------------------------------------------------------------
+
+/* < Using Subquery in WHERE clause > */
+
+/* QUESTION:  Find the employees who earn more than the average salary earned by all employees. */
+
+select *
+
+from employee e
+
+where salary > (select avg(salary) from employee)
+
+order by e.salary;
+
+--------------------------------------------------------------------------------
+
+/* < Using Subquery in FROM clause > */
+
+/* QUESTION: Find stores who's sales where better than the average sales accross all stores */
+
+-- Using WITH clause
+
+with sales as
+
+(select store_name, sum(price) as total_sales
+
+from sales
+
+group by store_name)
+
+select *
+
+from sales
+
+join (select avg(total_sales) as avg_sales from sales) avg_sales
+
+on sales.total_sales > avg_sales.avg_sales;
+
+--------------------------------------------------------------------------------
+
+/* < USING SUBQUERY IN SELECT CLAUSE > */
+
+-- Only subqueries which return 1 row and 1 column is allowed (scalar or correlated)
+
+/* QUESTION: Fetch all employee details and add remarks to those employees who earn more than the average pay. */
+
+select e.*
+
+, case when e.salary > (select avg(salary) from employee)
+
+then 'Above average Salary'
+
+   else null
+
+  end remarks
+
+from employee e;
+
+-- Alternative approach
+
+select e.*
+
+, case when e.salary > avg_sal.sal
+
+then 'Above average Salary'
+
+   else null
+
+  end remarks
+
+from employee e
+
+cross join (select avg(salary) sal from employee) avg_sal;
+
+--------------------------------------------------------------------------------
+
+/* < Using Subquery in HAVING clause > */
+
+/* QUESTION: Find the stores who have sold more units than the average units sold by all stores. */
+
+select store_name, sum(quantity) Items_sold
+
+from sales
+
+group by store_name
+
+having sum(quantity) > (select avg(quantity) from sales);
+
+-- SQL COMMANDS WHICH ALLOW A SUBQUERY
+
+--------------------------------------------------------------------------------
+
+/* < Using Subquery with INSERT statement > */
+
+/* QUESTION: Insert data to employee history table. Make sure not insert duplicate records. */
+
+insert into employee_history
+
+select e.emp_id, e.emp_name, d.dept_name, e.salary, d.location
+
+from employee e
+
+join department d on d.dept_name = e.dept_name
+
+where not exists (select 1
+
+  from employee_history eh
+
+  where eh.emp_id = e.emp_id);
+
+--------------------------------------------------------------------------------
+
+/* < Using Subquery with UPDATE statement > */
+
+/* QUESTION: Give 10% increment to all employees in Bangalore location based on the maximum
+
+salary earned by an emp in each dept. Only consider employees in employee_history table. */
+
+update employee e
+
+set salary = (select max(salary) + (max(salary) * 0.1)
+
+  from employee_history eh
+
+  where eh.dept_name = e.dept_name)
+
+where dept_name in (select dept_name
+
+   from department
+
+   where location = 'Bangalore')
+
+and e.emp_id in (select emp_id from employee_history);
+
+--------------------------------------------------------------------------------
+
+/* < Using Subquery with DELETE statement > */
+
+/* QUESTION: Delete all departments who do not have any employees. */
+
+delete from department d1
+
+where dept_name in (select dept_name from department d2
+
+    where not exists (select 1 from employee e
+
+  where e.dept_name = d2.dept_name));
+ 
+=============================
+RECURSIVE
+
+-- RECURSIVE SQL QUERIES in PostgreSQL, Oracle, MSSQL & MySQL
+
+ Recursive Query Structure/Syntax
+
+						WITH [RECURSIVE] CTE_name AS
+
+						(
+
+						     SELECT query (Non Recursive query or the Base query)
+
+						    UNION [ALL]
+
+						SELECT query (Recursive query using CTE_name [with a termination condition])
+
+						)
+
+						SELECT * FROM CTE_name;
+
+
+
+/* Difference in Recursive Query syntax for PostgreSQL, Oracle, MySQL, MSSQL.
+
+- Syntax for PostgreSQL and MySQL is the same.
+
+- In MSSQL, RECURSIVE keyword is not required and we should use UNION ALL instead of UNION.
+
+- In Oracle, RECURSIVE keyword is not required and we should use UNION ALL instead of UNION. Additionally, we need to provide column alias in WITH clause itself
+
+*/
+
+-- Queries:
+
+-- Q1: Display number from 1 to 10 without using any in built functions.
+
+-- Q2: Find the hierarchy of employees under a given manager "Asha".
+
+-- Q3: Find the hierarchy of managers for a given employee "David".
+
+/* TABLE CREATION SCRIPT - PostgreSQL, Oracle, MSSQL */
+
+DROP TABLE emp_details;
+
+CREATE TABLE emp_details
+
+    (
+        id           int PRIMARY KEY,
+        name         varchar(100),
+        manager_id   int,
+        salary       int,
+        designation  varchar(100)
+    );
+
+INSERT INTO emp_details VALUES (1,  'Shripadh', NULL, 10000, 'CEO');
+INSERT INTO emp_details VALUES (2,  'Satya', 5, 1400, 'Software Engineer');
+INSERT INTO emp_details VALUES (3,  'Jia', 5, 500, 'Data Analyst');
+INSERT INTO emp_details VALUES (4,  'David', 5, 1800, 'Data Scientist');
+INSERT INTO emp_details VALUES (5,  'Michael', 7, 3000, 'Manager');
+INSERT INTO emp_details VALUES (6,  'Arvind', 7, 2400, 'Architect');
+INSERT INTO emp_details VALUES (7,  'Asha', 1, 4200, 'CTO');
+INSERT INTO emp_details VALUES (8,  'Maryam', 1, 3500, 'Manager');
+INSERT INTO emp_details VALUES (9,  'Reshma', 8, 2000, 'Business Analyst');
+INSERT INTO emp_details VALUES (10, 'Akshay', 8, 2500, 'Java Developer');
+
+commit;
+
+/* ************************************************************************** */
+
+/* TABLE CREATION SCRIPT - MySQL */
+
+DROP TABLE demo.emp_details;
+
+CREATE TABLE demo.emp_details
+
+    (
+
+        id           int PRIMARY KEY,
+
+        name         varchar(100),
+
+        manager_id   int,
+
+        salary       int,
+
+        designation  varchar(100)
+
+    );
+
+INSERT INTO demo.emp_details VALUES (1,  'Shripadh', NULL, 10000, 'CEO');
+
+INSERT INTO demo.emp_details VALUES (2,  'Satya', 5, 1400, 'Software Engineer');
+
+INSERT INTO demo.emp_details VALUES (3,  'Jia', 5, 500, 'Data Analyst');
+
+INSERT INTO demo.emp_details VALUES (4,  'David', 5, 1800, 'Data Scientist');
+
+INSERT INTO demo.emp_details VALUES (5,  'Michael', 7, 3000, 'Manager');
+
+INSERT INTO demo.emp_details VALUES (6,  'Arvind', 7, 2400, 'Architect');
+
+INSERT INTO demo.emp_details VALUES (7,  'Asha', 1, 4200, 'CTO');
+
+INSERT INTO demo.emp_details VALUES (8,  'Maryam', 1, 3500, 'Manager');
+
+INSERT INTO demo.emp_details VALUES (9,  'Reshma', 8, 2000, 'Business Analyst');
+
+INSERT INTO demo.emp_details VALUES (10, 'Akshay', 8, 2500, 'Java Developer');
+
+commit;
+
+/* ************************************************************************** */
+
+/* Q1: Display number from 1 to 10 without using any in built functions. */
+
+-- PostgreSQL
+
+with recursive num as
+
+(select 1 as n
+
+    union
+
+    select n+1 as n
+
+    from num where n < 10
+
+    )
+
+select * from num;
+
+-- Oracle
+
+with num (n) as
+
+(select 1 as n from dual
+
+    union all
+
+    select n+1 as n
+
+    from num where n < 10
+
+    )
+
+select * from num;
+
+-- MSSQL (Microsoft SQL Server)
+
+with num as
+
+(select 1 as n
+
+    union all
+
+    select n+1 as n
+
+    from num where n < 10
+
+    )
+
+select * from num;
+
+-- MySQL
+
+with recursive num as
+
+(select 1 as n
+
+    union
+
+    select n+1 as n
+
+    from num where n < 10
+
+    )
+
+select * from num;
+
+/* ************************************************************************** */
+
+/* Q2: Find the hierarchy of employees under a given manager */
+
+-- PostgreSQL
+
+with recursive managers as
+
+(select id as emp_id, name as emp_name, manager_id
+
+, designation as emp_role, 1 as level
+
+from emp_details e where id=7
+
+union
+
+select e.id as emp_id, e.name as emp_name, e.manager_id
+
+, e.designation as emp_role, level+1 as level
+
+from emp_details e
+
+join managers m on m.emp_id = e.manager_id)
+
+select *
+
+from managers;
+
+-- Oracle
+
+with  managers (emp_id, emp_name, manager_id, designation, lvl) as
+
+(select id as emp_id, name as emp_name, manager_id
+
+, designation as emp_role, 1 as lvl
+
+from emp_details e where id=7
+
+union all
+
+select e.id as emp_id, e.name as emp_name, e.manager_id
+
+, e.designation as emp_role, lvl+1 as lvl
+
+from emp_details e
+
+join managers m on m.emp_id = e.manager_id)
+
+select *
+
+from managers;
+
+-- MSSQL (Microsoft SQL Server)
+
+with  managers as
+
+(select id as emp_id, name as emp_name, manager_id
+
+, designation as emp_role, 1 as level
+
+from emp_details e where id=7
+
+union all
+
+select e.id as emp_id, e.name as emp_name, e.manager_id
+
+, e.designation as emp_role, level+1 as level
+
+from emp_details e
+
+join managers m on m.emp_id = e.manager_id)
+
+select *
+
+from managers;
+
+-- MySQL
+
+with recursive managers as
+
+(select id as emp_id, name as emp_name, manager_id
+
+, designation as emp_role, 1 as level
+
+from demo.emp_details e where id=7
+
+union
+
+select e.id as emp_id, e.name as emp_name, e.manager_id
+
+, e.designation as emp_role, level+1 as level
+
+from demo.emp_details e
+
+join managers m on m.emp_id = e.manager_id)
+
+select *
+
+from managers;
+
+/* ************************************************************************** */
+
+/* Q2-A: Find the hierarchy of employees under a given employee. Also displaying the manager name. */
+
+-- PostgreSQL
+
+with recursive managers as
+
+(select id as emp_id, name as emp_name, manager_id
+
+, designation as emp_role, 1 as level
+
+from emp_details e where id=7
+
+union
+
+select e.id as emp_id, e.name as emp_name, e.manager_id
+
+, e.designation as emp_role, level+1 as level
+
+from emp_details e
+
+join managers m on m.emp_id = e.manager_id)
+
+select m.emp_id, m.emp_name, m.manager_id, e.name as manager_name
+
+, m.emp_role, m.level
+
+from managers m
+
+join emp_details e on e.id=m.manager_id;
+
+/* ************************************************************************** */
+
+/* Q3: Find the hierarchy of managers for a given employee */
+
+-- PostgreSQL
+
+with recursive managers as
+
+(select id as emp_id, name as emp_name, manager_id
+
+, designation as emp_role, 1 as level
+
+from emp_details e where id=7
+
+union
+
+select e.id as emp_id, e.name as emp_name, e.manager_id
+
+, e.designation as emp_role, level+1 as level
+
+from emp_details e
+
+join managers m on m.manager_id = e.id)
+
+select *
+
+from managers;
+
+-- Oracle
+
+with  managers (emp_id, emp_name, manager_id, designation, lvl) as
+
+(select id as emp_id, name as emp_name, manager_id
+
+, designation as emp_role, 1 as lvl
+
+from emp_details e where id=7
+
+union all
+
+select e.id as emp_id, e.name as emp_name, e.manager_id
+
+, e.designation as emp_role, lvl+1 as lvl
+
+from emp_details e
+
+join managers m on m.manager_id = e.id)
+
+select *
+
+from managers;
+
+-- MSSQL (Microsoft SQL Server)
+
+with  managers (emp_id, emp_name, manager_id, designation, lvl) as
+
+(select id as emp_id, name as emp_name, manager_id
+
+, designation as emp_role, 1 as lvl
+
+from emp_details e where id=7
+
+union all
+
+select e.id as emp_id, e.name as emp_name, e.manager_id
+
+, e.designation as emp_role, lvl+1 as lvl
+
+from emp_details e
+
+join managers m on m.manager_id = e.id)
+
+select *
+
+from managers;
+
+-- MySQL
+
+with recursive managers as
+
+(select id as emp_id, name as emp_name, manager_id
+
+, designation as emp_role, 1 as level
+
+from demo.emp_details e where id=7
+
+union
+
+select e.id as emp_id, e.name as emp_name, e.manager_id
+
+, e.designation as emp_role, level+1 as level
+
+from demo.emp_details e
+
+join managers m on m.manager_id = e.id)
+
+select *
+
+from managers;
+
+/* ***********************************************************************************
+   ***********************************************************************************/
+   
+DELETE FROM [SampleDB].[dbo].[Employee]
+    WHERE ID NOT IN
+    (
+        SELECT MAX(ID) AS MaxRecordID
+        FROM [SampleDB].[dbo].[Employee]
+        GROUP BY [FirstName], 
+                 [LastName], 
+                 [Country]
+    );
+	
+WITH CTE([FirstName], 
+    [LastName], 
+    [Country], 
+    1234)
+AS (SELECT [FirstName], 
+           [LastName], 
+           [Country], 
+           ROW_NUMBER() OVER(PARTITION BY [FirstName], 
+                                          [LastName], 
+                                          [Country]
+           ORDER BY ID) AS DuplicateCount
+    FROM [SampleDB].[dbo].[Employee])
+DELETE FROM CTE
+WHERE DuplicateCount > 1;
+
+
+
+---------------------------------============
+
+
+
+
+-- SELECT distinct CITY FROM STATION 
+-- WHERE right(LOWER(CITY),1) NOT IN ('a','e','i','o','u');
+
+-- SELECT distinct CITY FROM STATION 
+--  where right(LOWER(CITY),1) regexp '[^aeiou]$'
+
+
+-- SELECT distinct CITY FROM STATION 
+-- where substring(lower(city),-1,1) regexp '[^aeiou]$'
+
+
+
+-- SELECT distinct CITY FROM STATION 
+-- where substring(lower(city),-1,1) NOT IN ('a','e','i','o','u');
+
+
+
+=========================================================================================================================
+
+
+Query the list of CITY names from STATION that either do not start with 
+vowels or do not end with vowels. Your result cannot contain duplicates.
+
+
+-- SELECT distinct CITY FROM STATION 
+-- WHERE left(LOWER(CITY),1) NOT IN ('a','e','i','o','u') or right(LOWER(CITY),1) NOT IN ('a','e','i','o','u') ;
+
+-- SELECT distinct CITY FROM STATION 
+-- WHERE left(LOWER(CITY),1) NOT IN ('a','e','i','o','u') or right(LOWER(CITY),1) NOT IN ('a','e','i','o','u') ;
+
+-- SELECT DISTINCT city FROM station
+-- WHERE LOWER(city) NOT REGEXP '^[aeiou]'
+-- AND LOWER(city) NOT REGEXP '[aeiou]$';
+-- SELECT DISTINCT city FROM station WHERE city RLIKE '^[^aeiouAEIOU].*|.*[^AEIOUaeiou]$';
+
+
+-- SELECT distinct CITY FROM STATION
+-- WHERE LOWER(CITY) NOT RLIKE '^[aeiou].*[aeiou]$'
+
+===========================================================================================================================
+
+
+Generate the following two result sets:
+
+Query an alphabetically ordered list of all names in OCCUPATIONS, immediately followed by the first letter of each profession as a parenthetical (i.e.: enclosed in parentheses). 
+For example: AnActorName(A), ADoctorName(D), AProfessorName(P), and ASingerName(S).
+Query the number of ocurrences of each occupation in OCCUPATIONS. Sort the occurrences in ascending order, and output them in the following format:
+
+There are a total of [occupation_count] [occupation]s.
+where [occupation_count] is the number of occurrences of an occupation in OCCUPATIONS and [occupation] is the lowercase occupation name. If more than one Occupation has the same [occupation_count], they should be ordered alphabetically.
+
+Note: There will be at least two entries in the table for each type of occupation.
+
+
+
+
+SELECT concat (Name ,'(' , upper(left(Occupation,1)) , ')' ) AS NAME 
+FROM OCCUPATIONS order by name asc  ;
+select concat('There are a total of ',count(occupation) ," ",lower(occupation),'s.') from occupations group by   occupation order by count(occupation), occupation asc
+
+-- -- Query 1
+-- SELECT CONCAT(name, '(', LEFT(occupation, 1), ')') AS result
+-- FROM OCCUPATIONS
+-- ORDER BY name;
+
+-- -- Query 2
+-- SELECT CONCAT('There are a total of ', COUNT(*), ' ', LOWER(occupation), 's.') AS result
+-- FROM OCCUPATIONS
+-- GROUP BY occupation
+-- ORDER BY COUNT(*), LOWER(occupation);
+
+=============================================================================================================================
+
+
+Query the Western Longitude (LONG_W)where the smallest Northern Latitude (LAT_N) in STATION is greater than 38.7780. Round your answer to  decimal places.
+
+Input Format
+
+The STATION table is described as follows
+
+
+
+-- SELECT ROUND(LONG_W,4) FROM STATION 
+-- WHERE 
+-- LAT_N > 38.7780
+-- ORDER BY LAT_N LIMIT 1
+
+
+select round(long_w,4) from station
+where lat_n = (select min(lat_n) from station where lat_n>38.7780)
+
+==============================================================================================================================
+SELECT
+
+C.COMPANY_CODE,C.FOUNDER,COUNT(DISTINCT L.LEAD_MANAGER_CODE),COUNT(DISTINCT S.SENIOR_MANAGER_CODE),
+COUNT(DISTINCT M.MANAGER_CODE),COUNT(DISTINCT E.EMPLOYEE_CODE)
+
+FROM COMPANY C JOIN LEAD_MANAGER L
+    ON C.COMPANY_CODE=L.COMPANY_CODE
+    
+    JOIN   SENIOR_MANAGER S
+    ON L.LEAD_MANAGER_CODE=S.LEAD_MANAGER_CODE
+    
+    JOIN MANAGER M
+    ON S.SENIOR_MANAGER_CODE=M.SENIOR_MANAGER_CODE
+    
+    JOIN EMPLOYEE E
+    ON  M.MANAGER_CODE=E.MANAGER_CODE
+    
+GROUP BY C.COMPANY_CODE,C.FOUNDER
+
+ORDER BY C.COMPANY_CODE
+
+==============================================================================================================================
+
+
+
+SELECT 
+
+ CASE WHEN GRADES.GRADE<8 THEN 'NULL'  ELSE STUDENTS.NAME END,
+GRADES.GRADE,STUDENTS.MARKS
+
+FROM STUDENTS ,GRADES
+WHERE STUDENTS.MARKS >=GRADES.MIN_MARK AND STUDENTS.MARKS <= GRADES.MAX_MARK
+
+ORDER BY GRADES.GRADE DESC,STUDENTS.NAME 
+
+
+
+-- SELECT CASE 
+--     WHEN Grades.Grade < 8 THEN 'NULL' 
+--     ELSE Students.Name 
+--     END 
+-- , Grades.Grade, Students.Marks 
+-- FROM Students, Grades 
+-- WHERE Students.Marks >= Grades.Min_mark AND Students.Marks <= Grades.Max_mark 
+-- ORDER BY Grades.Grade DESC, Students.Name;
+
+Query the list of CITY names from STATION that do not end with vowels. Your result cannot contain duplicates.
+
+
+===========================================================================================
+
+
+==========================================================================================================
+
+
+Note: For answers of below questions, join my telegram channel from the link mentioned in my Instagram profile bio.
+
+1. Write a query to calculate the year-over-year growth rate of total sales for each product category, 
+   excluding any categories with sales less than $10,000 in any year.
+- Tables: sales (sale_id, product_id, sale_amount, sale_date), products (product_id, category)
+
+	with cte(
+	select p.category, extract(year from sale_Date) as year , sum(sale_amount) from sales s join category p on s.product_id = p.product_id
+	group by p.category,extract(year from sale_Date),
+	
+
+
+2. Write a query to find the top 3 products by sales amount in each quarter of the year.
+- Tables: sales (sale_id, product_id, sale_amount, sale_date)
+
+3. Write a query to detect and list all customers who have made purchases on at least three consecutive days.
+- Tables: purchases (purchase_id, customer_id, purchase_date)
+
+4. Write a query to identify suppliers who have maintained an average delivery time of less than 3 days over the last year.
+- Tables: deliveries (delivery_id, supplier_id, delivery_date, order_date)
+
+5. Write a query to find the employees who have consistently met or exceeded their sales targets for each quarter in the last two years.
+- Tables: employee_sales (employee_id, quarter, sales_amount, target_amount)
+
+6. Write a query to calculate the moving average of daily sales over a 30-day window for each product.
+- Tables: sales (sale_id, product_id, sale_amount, sale_date)
+
+7. Write a query to find customers who have not made any purchases in the last 6 months but have made at least one purchase in the 6 months prior to that.
+- Tables: purchases (purchase_id, customer_id, purchase_date)
+
+8. Write a query to identify all products that have experienced a sudden drop in sales (more than 50%) compared to the previous month.
+- Tables: sales (sale_id, product_id, sale_amount, sale_date)
+
+9. Write a query to determine the top 5 stores with the highest average transaction value, excluding transactions below $20.
+- Tables: transactions (transaction_id, store_id, amount, transaction_date)
+
+10. Write a query to find employees who have worked under more than three different managers in the past five years.
+- Tables: employee_history (employee_id, manager_id, start_date, end_date)
+
+
+
+
+-====================================
+
+
+
+
+DROP TABLE employee_history;
+
+DROP TABLE EMPLOYEE;
+
+drop table department;
+
+DROP table sales ;
+
+
+
+create table department
+(
+dept_id int ,
+dept_name varchar(50) PRIMARY KEY,
+location varchar(100)
+);
+
+insert into department values (1, 'Admin', 'Bangalore');
+insert into department values (2, 'HR', 'Bangalore');
+insert into department values (3, 'IT', 'Bangalore');
+insert into department values (4, 'Finance', 'Mumbai');
+insert into department values (5, 'Marketing', 'Bangalore');
+insert into department values (6, 'Sales', 'Mumbai');
+
+
+
+CREATE TABLE EMPLOYEE
+(    EMP_ID      INT PRIMARY KEY,
+     EMP_NAME    VARCHAR(50) NOT NULL,
+     DEPT_NAME   VARCHAR(50) NOT NULL,
+     SALARY      INT,
+     constraint fk_emp foreign key(dept_name) references department(dept_name)
+
+);
+
+insert into employee values(101, 'Mohan', 'Admin', 4000);
+insert into employee values(102, 'Rajkumar', 'HR', 3000);
+insert into employee values(103, 'Akbar', 'IT', 4000);
+insert into employee values(104, 'Dorvin', 'Finance', 6500);
+insert into employee values(105, 'Rohit', 'HR', 3000);
+insert into employee values(106, 'Rajesh',  'Finance', 5000);
+insert into employee values(107, 'Preet', 'HR', 7000);
+insert into employee values(108, 'Maryam', 'Admin', 4000);
+insert into employee values(109, 'Sanjay', 'IT', 6500);
+insert into employee values(110, 'Vasudha', 'IT', 7000);
+insert into employee values(111, 'Melinda', 'IT', 8000);
+insert into employee values(112, 'Komal', 'IT', 10000);
+insert into employee values(113, 'Gautham', 'Admin', 2000);
+insert into employee values(114, 'Manisha', 'HR', 3000);
+insert into employee values(115, 'Chandni', 'IT', 4500);
+insert into employee values(116, 'Satya', 'Finance', 6500);
+insert into employee values(117, 'Adarsh', 'HR', 3500);
+insert into employee values(118, 'Tejaswi', 'Finance', 5500);
+insert into employee values(119, 'Cory', 'HR', 8000);
+insert into employee values(120, 'Monica', 'Admin', 5000);
+insert into employee values(121, 'Rosalin', 'IT', 6000);
+insert into employee values(122, 'Ibrahim', 'IT', 8000);
+insert into employee values(123, 'Vikram', 'IT', 8000);
+insert into employee values(124, 'Dheeraj', 'IT', 11000);
+
+
+
+
+
+CREATE TABLE employee_history
+
+(
+
+    emp_id      INT PRIMARY KEY,
+
+    emp_name    VARCHAR(50) NOT NULL,
+
+    dept_name   VARCHAR(50),
+
+    salary      INT,
+
+    location    VARCHAR(100),
+
+    constraint fk_emp_hist_01 foreign key(dept_name) references department(dept_name),
+
+    constraint fk_emp_hist_02 foreign key(emp_id) references employee(emp_id)
+
+);
+
+
+
+create table sales
+
+(
+
+store_id   int,
+
+store_name   varchar(50),
+
+product_name varchar(50),
+
+quantity int,
+
+price       int
+
+);
+
+insert into sales values
+
+(1, 'Apple Store 1','iPhone 13 Pro', 1, 1000),
+
+(1, 'Apple Store 1','MacBook pro 14', 3, 6000),
+
+(1, 'Apple Store 1','AirPods Pro', 2, 500),
+
+(2, 'Apple Store 2','iPhone 13 Pro', 2, 2000),
+
+(3, 'Apple Store 3','iPhone 12 Pro', 1, 750),
+
+(3, 'Apple Store 3','MacBook pro 14', 1, 2000),
+
+(3, 'Apple Store 3','MacBook Air', 4, 4400),
+
+(3, 'Apple Store 3','iPhone 13', 2, 1800),
+
+(3, 'Apple Store 3','AirPods Pro', 3, 750),
+
+(4, 'Apple Store 4','iPhone 12 Pro', 2, 1500),
+
+(4, 'Apple Store 4','MacBook pro 16', 1, 3500);
+
+
+
+
+
+select * from employee;
+
+select * from department;
+
+select * from employee_history;
+
+select * from sales;
+
+
+
+
+
+-- INTRO
+
+--------------------------------------------------------------------------------
+
+/* < WHAT IS SUBQUERIES? Sample subquery. How SQL processes this statement containing subquery? > */
+
+
+
+/* QUESTION: Find the employees who's salary is more than the average salary earned by all employees. */
+
+-- 1) find the avg salary
+
+-- 2) filter employees based on the above avg salary
+
+select *
+
+from employee e
+
+where salary > (select avg(salary) from employee)
+
+order by e.salary;
+
+
+
+
+
+
+
+-- TYPES OF SUBQUERY
+
+--------------------------------------------------------------------------------
+
+/* < SCALAR SUBQUERY > */
+
+/* QUESTION: Find the employees who earn more than the average salary earned by all employees. */
+
+-- it return exactly 1 row and 1 column
+
+
+
+select *
+
+from employee e
+
+where salary > (select avg(salary) from employee)
+
+order by e.salary;
+
+
+
+select e.*, round(avg_sal.sal,2) as avg_salary
+
+from employee e
+
+join (select avg(salary) sal from employee) avg_sal
+
+on e.salary > avg_sal.sal;
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+/* < MULTIPLE ROW SUBQUERY > */
+
+-- Multiple column, multiple row subquery
+
+/* QUESTION: Find the employees who earn the highest salary in each department. */
+
+1) find the highest salary in each department.
+
+2) filter the employees based on above result.
+
+select *
+
+from employee e
+
+where (dept_name,salary) in (select dept_name, max(salary) from employee group by dept_name)
+
+order by dept_name, salary;
+
+
+
+-- Single column, multiple row subquery
+
+/* QUESTION: Find department who do not have any employees */
+
+1) find the departments where employees are present.
+
+2) from the department table filter out the above results.
+
+select *
+
+from department
+
+where dept_name not in (select distinct dept_name from employee);
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+/* < CORRELATED SUBQUERY >
+
+-- A subquery which is related to the Outer query
+
+/* QUESTION: Find the employees in each department who earn more than the average salary in that department. */
+
+1) find the avg salary per department
+
+2) filter data from employee tables based on avg salary from above result.
+
+
+
+select *
+
+from employee e
+
+where salary > (select avg(salary) from employee e2 where e2.dept_name=e.dept_name)
+
+order by dept_name, salary;
+
+
+
+/* QUESTION: Find department who do not have any employees */
+
+-- Using correlated subquery
+
+select *
+
+from department d
+
+where not exists (select 1 from employee e where e.dept_name = d.dept_name)
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+/* < SUBQUERY inside SUBQUERY (NESTED Query/Subquery)> */
+
+
+
+/* QUESTION: Find stores who's sales where better than the average sales accross all stores */
+
+1) find the sales for each store
+
+2) average sales for all stores
+
+3) compare 2 with 1
+
+-- Using multiple subquery
+
+select *
+
+from (select store_name, sum(price) as total_sales
+
+from sales
+
+group by store_name) sales
+
+join (select avg(total_sales) as avg_sales
+
+from (select store_name, sum(price) as total_sales
+
+  from sales
+
+  group by store_name) x
+
+) avg_sales
+
+on sales.total_sales > avg_sales.avg_sales;
+
+
+
+-- Using WITH clause
+
+with sales as
+
+(select store_name, sum(price) as total_sales
+
+from sales
+
+group by store_name)
+
+select *
+
+from sales
+
+join (select avg(total_sales) as avg_sales from sales) avg_sales
+
+on sales.total_sales > avg_sales.avg_sales;
+
+
+
+
+
+
+
+-- CLAUSES WHERE SUBQUERY CAN BE USED
+
+--------------------------------------------------------------------------------
+
+/* < Using Subquery in WHERE clause > */
+
+/* QUESTION:  Find the employees who earn more than the average salary earned by all employees. */
+
+select *
+
+from employee e
+
+where salary > (select avg(salary) from employee)
+
+order by e.salary;
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+/* < Using Subquery in FROM clause > */
+
+/* QUESTION: Find stores who's sales where better than the average sales accross all stores */
+
+-- Using WITH clause
+
+with sales as
+
+(select store_name, sum(price) as total_sales
+
+from sales
+
+group by store_name)
+
+select *
+
+from sales
+
+join (select avg(total_sales) as avg_sales from sales) avg_sales
+
+on sales.total_sales > avg_sales.avg_sales;
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+/* < USING SUBQUERY IN SELECT CLAUSE > */
+
+-- Only subqueries which return 1 row and 1 column is allowed (scalar or correlated)
+
+/* QUESTION: Fetch all employee details and add remarks to those employees who earn more than the average pay. */
+
+select e.*
+
+, case when e.salary > (select avg(salary) from employee)
+
+then 'Above average Salary'
+
+   else null
+
+  end remarks
+
+from employee e;
+
+
+
+-- Alternative approach
+
+select e.*
+
+, case when e.salary > avg_sal.sal
+
+then 'Above average Salary'
+
+   else null
+
+  end remarks
+
+from employee e
+
+cross join (select avg(salary) sal from employee) avg_sal;
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+/* < Using Subquery in HAVING clause > */
+
+/* QUESTION: Find the stores who have sold more units than the average units sold by all stores. */
+
+select store_name, sum(quantity) Items_sold
+
+from sales
+
+group by store_name
+
+having sum(quantity) > (select avg(quantity) from sales);
+
+
+
+
+
+
+
+
+
+-- SQL COMMANDS WHICH ALLOW A SUBQUERY
+
+--------------------------------------------------------------------------------
+
+/* < Using Subquery with INSERT statement > */
+
+/* QUESTION: Insert data to employee history table. Make sure not insert duplicate records. */
+
+insert into employee_history
+
+select e.emp_id, e.emp_name, d.dept_name, e.salary, d.location
+
+from employee e
+
+join department d on d.dept_name = e.dept_name
+
+where not exists (select 1
+
+  from employee_history eh
+
+  where eh.emp_id = e.emp_id);
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+/* < Using Subquery with UPDATE statement > */
+
+/* QUESTION: Give 10% increment to all employees in Bangalore location based on the maximum
+
+salary earned by an emp in each dept. Only consider employees in employee_history table. */
+
+update employee e
+
+set salary = (select max(salary) + (max(salary) * 0.1)
+
+  from employee_history eh
+
+  where eh.dept_name = e.dept_name)
+
+where dept_name in (select dept_name
+
+   from department
+
+   where location = 'Bangalore')
+
+and e.emp_id in (select emp_id from employee_history);
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+/* < Using Subquery with DELETE statement > */
+
+/* QUESTION: Delete all departments who do not have any employees. */
+
+delete from department d1
+
+where dept_name in (select dept_name from department d2
+
+    where not exists (select 1 from employee e
+
+  where e.dept_name = d2.dept_name));
+ 
+ -------------------------------------------------------------------------------
+ 
+ 
+ DELETE FROM employee_activity
+WHERE employee_id IN (
+    SELECT employee_id
+    FROM (
+        SELECT 
+            employee_id, 
+            activity_date, 
+            ROW_NUMBER() OVER (PARTITION BY employee_id, activity_date ORDER BY first_login) AS row_num
+        FROM 
+            employee_activity
+    ) subquery
+    WHERE row_num > 1
+);
+DELETE e1 FROM employee_activity e1
+INNER JOIN employee_activity e2 
+WHERE 
+    e1.id < e2.id AND 
+    e1.employee_id = e2.employee_id AND 
+    e1.activity_date = e2.activity_date;
+
+WITH CTE AS (
+    SELECT 
+        employee_id, 
+        activity_date, 
+        first_login, 
+        last_logout,
+        ROW_NUMBER() OVER (PARTITION BY employee_id, activity_date ORDER BY first_login) AS row_num
+    FROM 
+        employee_activity
+)
+DELETE FROM CTE
+WHERE row_num > 1;
+
+---------------------------------------------------------------------------------------
+
+
+
+delete from employee where employee in (select count(*) from employee  group by employee_id)
+
+
+-------------------------------------------------------------------------------------------
+
+
+
+Name  |  group_id  |  participant_id  |   participant_name   |   slice_count bet
+
+-- Create the event_details table
+CREATE TABLE event_details (
+    group_id INT,
+    participant_id INT,
+    participant_name VARCHAR(50),
+    slice_count INT,
+    bet INT
+);
+
+-- Insert some dummy data
+INSERT INTO event_details (group_id, participant_id, participant_name, slice_count, bet) VALUES
+(1, 1, 'Alice', 8, 50),
+(1, 2, 'Bob', 6, 40),
+(1, 3, 'Charlie', 10, 60),
+(2, 4, 'David', 7, 45),
+(2, 5, 'Eve', 9, 55),
+(2, 6, 'Frank', 5, 35);
+
+
+=====================================================
+group 1 -- 60+15+12=87
+group 2 -- 55+13.5+10.5=79
+
+=====================================================
+
+WITH winners AS (
+    SELECT 
+        group_id, 
+        MAX(slice_count) as max_slices
+    FROM 
+        event_details
+    GROUP BY 
+        group_id
+),
+losers AS (
+    SELECT 
+        event_details.group_id, 
+        ROUND(SUM(bet)*0.3) as loser_payout
+    FROM 
+        event_details
+    JOIN 
+        winners ON event_details.group_id = winners.group_id
+    WHERE 
+        slice_count < max_slices
+    GROUP BY 
+        event_details.group_id
+),
+winners_details AS (
+    SELECT 
+        event_details.group_id, 
+        participant_name, 
+        bet
+    FROM 
+        event_details
+    JOIN 
+        winners ON event_details.group_id = winners.group_id
+    WHERE 
+        slice_count = max_slices
+)
+SELECT 
+    winners_details.participant_name, 
+    winners_details.bet + IFNULL(losers.loser_payout, 0) as payout
+FROM 
+    winners_details
+LEFT JOIN 
+    losers ON winners_details.group_id = losers.group_id
+ORDER BY 
+    winners_details.participant_name ASC;
+
+
+============================================================================
+---------------------------------------------------
+with a as (select *,max(slice_count) as ms, rank() over(partition by group_id) from event_details )
+,
+
+
+select *, sum(slice_count) * 0.3 * ms  from event_details where participant_id 
+not in select participant_id from (select *,max(slice_count), rank() over(partition by group_id) from event_details ) 
+
+============================================================================
+
+
+
+Given a table with columns priority, created (a timestamp), and status, 
+write a SQL query to determine the number of tickets created and the number of tickets finished each month, grouped by priority.
+
+Ticket ID INT
+Priority(P0,P1,P2) STRING
+Status(NEW, ASSIGNED, ACCEPTED, FIXED) STRING
+CreatedDate DATE
+ResolvedDate DATE 
+	
+
+	with A as(
+	select priority,extract(month,created Date) as month,count(ticketid) as COunt  from table where status in ('ASSIGNED','NEW','ACCEPTED','FIXED') group by priority, extract(month,created Date))
+	, B as(
+	select priority,extract (month, Resolved Date),count(ticketid) as COunt from table where status='FIXED' group priority, extract (month, Resolved Date)
+	)
+
+select A.priority, A.Month ,A.count,B.count from A,B where
+
+
+SELECT 
+    Priority,
+    EXTRACT(MONTH FROM CreatedDate) AS month,
+    COUNT(CASE WHEN Status IN ('NEW', 'ASSIGNED', 'ACCEPTED', 'FIXED') THEN TicketID END) AS tickets_created,
+    COUNT(CASE WHEN Status = 'FIXED' THEN TicketID END) AS tickets_finished
+FROM 
+    your_table_name
+WHERE
+    EXTRACT(MONTH FROM CreatedDate) = EXTRACT(MONTH FROM ResolvedDate)
+GROUP BY 
+    Priority,
+    EXTRACT(MONTH FROM CreatedDate);
+
+
+ ============================================================================
+
+WITH post_dates AS (
+    SELECT user_id, 
+           MIN(post_date) AS first_post, 
+           MAX(post_date) AS last_post
+    FROM posts
+    WHERE post_date BETWEEN '2021-01-01' AND '2021-12-31 23:59:59'
+    GROUP BY user_id
+    HAVING COUNT(post_id) >= 2
+)
+SELECT user_id, 
+       (last_post::date - first_post::date) AS days_between
+FROM post_dates;
+	

@@ -1,58 +1,3 @@
-?
-
- 
-
-Response stopped
-m
-
-
-
-win scp we
-
-LES- Live Event System
-
-TMS - Talent information system
-
-SQL server 
-SFTP location
-
-
-ETIX- comes from API
-
-
-What is AD-hoc
-
-Types of states in snowflake
-
-
-
-
- 
-I mean what are the considerations when we try to perform benchmarking, as I have encountered a scenario where Snowflake Managed is less performant compared to Externally managed
-CL
-Chinmayee Lakkad
-10:24 PM
-Could you describe that scenario a bit more?
-avatar
-Anonymous Attendee
-10:26 PM
-If possible, can you please point/provide me some Snowflake docs link for the below. Thanks in advance.
-1) Running Standalone Apache Spark on Snowflake environment.
-2) Running notebook command on Snowflake.
-This question has been answered live
-CL
-Chinmayee Lakkad
-10:29 PM
-1. here’s one quickstart that you can refer to which shows running Apache Spark on Notebooks with Container Runtime: https://quickstarts.snowflake.com/guide/apache-iceberg-snowflake-open-catalog-snowpipe-streaming/index.html?index=..%2F..index#3
-
-2. https://quickstarts.snowflake.com/guide/getting_started_with_snowflake_notebooks/index.html?index=..%2F..index#2
-
-
-
-
----------------------------------
-
-
 
 
 
@@ -67,7 +12,7 @@ Adept at collaborating with cross-functional teams to deliver actionable insight
 
 
 
-oobtain aposition as a DataEngineer. Over 3+yearsofprofessional IT experience which includes Big Data Ecosystem.
+obtain position as a DataEngineer. Over 3+yearsofprofessional IT experience which includes Big Data Ecosystem.
  Excellent experience with Large Volume data processing, Validation, Migration, ETL Tools, and Relational Database.
  
  
@@ -185,7 +130,7 @@ T.C.S
 
    A     B 
    1  	 1
-   2 	   1
+   2 	 1
    3   	 2
    5     4
   null   null 
@@ -232,4 +177,136 @@ UAN
 Darsh@121
 
 
- 
+ /*
+-- There are 3 types of Streams in Snowflake:
+    - Standard
+    - Append only
+    - Insert only
+*/
+
+--------------------------------------------------------------------------------------
+---------------------------------- STANDARD STREAMS ----------------------------------
+--------------------------------------------------------------------------------------
+
+-------------------- EXAMPLE 1 ------------------------
+-- Create a table to store the details of employees
+create or replace table employees(employee_id number,
+                    salary number,
+                     manager_id number);
+
+-- Create a stream to track changes to data in the EMPLOYEES table
+create or replace stream employees_stream on table employees;
+
+SHOW STREAMS;
+
+DESCRIBE STREAM employees_stream;
+
+SELECT SYSTEM$STREAM_GET_TABLE_TIMESTAMP('employees_stream');
+
+SELECT to_timestamp(SYSTEM$STREAM_GET_TABLE_TIMESTAMP('employees_stream')) as stream_offset;
+
+-- insert values in employees table
+insert into employees values(8,40000,4),
+                                 (12,50000,9),
+                                 (3,30000,5),
+                                 (4,10000,5),
+                                 (25,35000,9);
+                                 
+-- The stream records the inserted rows
+select * from employees_stream;
+
+
+-- Consume the stream
+create or replace table employees_consumer(employee_id number,
+                     salary number);
+                     
+insert into employees_consumer select employee_id, salary from employees_stream;
+
+select * from employees_consumer;
+
+SELECT SYSTEM$STREAM_GET_TABLE_TIMESTAMP('employees_stream');
+
+SELECT to_timestamp(SYSTEM$STREAM_GET_TABLE_TIMESTAMP('employees_stream')) as stream_offset;
+
+-------------------- EXAMPLE 2 - UPDATE ------------------------
+
+select * from employees_stream;
+
+SELECT SYSTEM$STREAM_GET_TABLE_TIMESTAMP('employees_stream');
+
+SELECT to_timestamp(SYSTEM$STREAM_GET_TABLE_TIMESTAMP('employees_stream')) as stream_offset;
+
+-- Create a table to store the details of employees
+update employees set salary = salary + 10000 where salary < 33000;
+
+SELECT to_timestamp(SYSTEM$STREAM_GET_TABLE_TIMESTAMP('employees_stream')) as stream_offset;
+
+select * from employees_stream;
+
+insert into employees_consumer select employee_id, salary 
+                                from employees_stream 
+                                where METADATA$ACTION = 'INSERT' and METADATA$ISUPDATE = 'TRUE';
+
+select * from employees_consumer;
+
+SELECT to_timestamp(SYSTEM$STREAM_GET_TABLE_TIMESTAMP('employees_stream')) as stream_offset;
+
+
+-------------------- EXAMPLE 3 - DELETE ------------------------
+
+select * from employees_stream;
+
+SELECT SYSTEM$STREAM_GET_TABLE_TIMESTAMP('employees_stream');
+
+SELECT to_timestamp(SYSTEM$STREAM_GET_TABLE_TIMESTAMP('employees_stream')) as stream_offset;
+
+-- Create a table to store the details of employees
+DELETE FROM employees WHERE SALARY < 40000;
+
+select * from employees_stream;
+
+DELETE FROM employees_consumer WHERE EMPLOYEE_ID IN (select DISTINCT employee_id
+                                from employees_stream 
+                                where METADATA$ACTION = 'DELETE' and METADATA$ISUPDATE = 'FALSE');
+
+select * from employees_consumer;
+
+SELECT to_timestamp(SYSTEM$STREAM_GET_TABLE_TIMESTAMP('employees_stream')) as stream_offset;
+
+
+
+
+-------------------- EXAMPLE 4 - INSERTs WITHIN A TRANSACTION ------------------------
+SELECT SYSTEM$STREAM_GET_TABLE_TIMESTAMP('employees_stream');
+
+SELECT to_timestamp(SYSTEM$STREAM_GET_TABLE_TIMESTAMP('employees_stream')) as stream_offset;
+
+BEGIN;
+
+show transactions;
+
+-- insert values in employees table
+insert into employees values(12,50000,9),
+                            (86,90000,4),
+                          (73,20000,1);
+                                 
+-- The stream records the inserted rows
+select * from employees_stream;
+
+COMMIT;
+
+select * from employees_stream;
+
+-- Consume the stream
+create or replace table employees_consumer(employee_id number,
+                     salary number);
+                     
+insert into employees_consumer select employee_id, salary from employees_stream;
+
+select * from employees_consumer;
+
+DROP STREAM EMPLOYEES_STREAM;
+
+ALTER STREAM EMPLOYEES_STREAM SET COMMENT = 'This stream is used to capture changes from employees table';
+
+SHOW STREAMS;

@@ -27,7 +27,7 @@ SELECT SYSTEM$STREAM_GET_TABLE_TIMESTAMP('employees_stream');
 SELECT to_timestamp(SYSTEM$STREAM_GET_TABLE_TIMESTAMP('employees_stream')) as stream_offset;
 
 -- insert values in employees table
-insert into employees values(8,40000,4),
+insert into employees values     (8,40000,4),
                                  (12,50000,9),
                                  (3,30000,5),
                                  (4,10000,5),

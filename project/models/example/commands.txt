@@ -1,6 +1,6 @@
 =================================================================================
 @parikshit-Dudhalkar ➜ /workspaces/DBT (main) $ source dbt_env/bin/activate
-
+ source dbt_env/bin/activate
 =================================================================================
 (dbt_env) @parikshit-Dudhalkar ➜ /workspaces/DBT/dbt_env/bin (main) $ pip install pyyaml
 ================================================================================
