@@ -1,0 +1,617 @@
+1. np.array()
+Description: Creates an n-dimensional array.
+Example:
+python
+Copy code
+arr = np.array([1, 2, 3, 4])
+print(arr)
+Output:
+csharp
+Copy code
+[1 2 3 4]
+
+
+2. array.ndim
+Description: Returns the number of dimensions of the array.
+Example:
+python
+Copy code
+print(arr.ndim)
+Output:
+Copy code
+1
+
+
+3. array.shape
+Description: Returns the shape of the array.
+Example:
+python
+Copy code
+print(arr.shape)
+Output:
+scss
+Copy code
+(4,)
+
+
+4. array.reshape()
+Description: Reshapes an array to a specified shape.
+Example:
+python
+Copy code
+arr_reshaped = arr.reshape((2, 2))
+print(arr_reshaped)
+Output:
+lua
+Copy code
+[[1 2]
+ [3 4]]
+
+
+5. np.nditer()
+Description: Iterator for multi-dimensional arrays.
+Example:
+python
+Copy code
+for x in np.nditer(arr_reshaped):
+    print(x, end=' ')
+Output:
+Copy code
+1 2 3 4
+
+
+6. np.ndenumerate()
+Description: Enumerates over an array with index.
+Example:
+python
+Copy code
+for idx, x in np.ndenumerate(arr_reshaped):
+    print(idx, x)
+Output:
+scss
+Copy code
+(0, 0) 1
+(0, 1) 2
+(1, 0) 3
+(1, 1) 4
+
+
+7. np.zeros()
+Description: Creates an array filled with zeros.
+Example:
+python
+Copy code
+zeros_arr = np.zeros((3, 3))
+print(zeros_arr)
+Output:
+lua
+Copy code
+[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+
+
+8. np.ones()
+Description: Creates an array filled with ones.
+Example:
+python
+Copy code
+ones_arr = np.ones((3, 3))
+print(ones_arr)
+Output:
+lua
+Copy code
+[[1. 1. 1.]
+ [1. 1. 1.]
+ [1. 1. 1.]]
+
+
+9. np.full()
+Description: Creates an array filled with a specified value.
+Example:
+python
+Copy code
+full_arr = np.full((2, 2), 7)
+print(full_arr)
+Output:
+lua
+Copy code
+[[7 7]
+ [7 7]]
+
+
+10. np.arange()
+Description: Creates an array with a range of values.
+Example:
+python
+Copy code
+range_arr = np.arange(0, 10, 2)
+print(range_arr)
+Output:
+csharp
+Copy code
+[0 2 4 6 8]
+
+
+11. np.linspace()
+Description: Creates an array with linearly spaced values.
+Example:
+python
+Copy code
+linspace_arr = np.linspace(0, 1, 5)
+print(linspace_arr)
+Output:
+csharp
+Copy code
+[0.   0.25 0.5  0.75 1.  ]
+
+
+12. np.eye()
+Description: Creates a 2D identity matrix.
+Example:
+python
+Copy code
+eye_arr = np.eye(3)
+print(eye_arr)
+Output:
+lua
+Copy code
+[[1. 0. 0.]
+ [0. 1. 0.]
+ [0. 0. 1.]]
+
+
+13. np.identity()
+Description: Creates a square identity matrix.
+Example:
+python
+Copy code
+identity_arr = np.identity(4)
+print(identity_arr)
+Output:
+lua
+Copy code
+[[1. 0. 0. 0.]
+ [0. 1. 0. 0.]
+ [0. 0. 1. 0.]
+ [0. 0. 0. 1.]]
+
+
+14. np.random.rand()
+Description: Generates an array of random values between 0 and 1.
+Example:
+python
+Copy code
+rand_arr = np.random.rand(2, 3)
+print(rand_arr)
+Output:
+lua
+Copy code
+[[0.5488135  0.71518937 0.60276338]
+ [0.54488318 0.4236548  0.64589411]]
+
+
+15. np.random.randint()
+Description: Generates random integers between specified values.
+Example:
+python
+Copy code
+randint_arr = np.random.randint(0, 10, (3, 3))
+print(randint_arr)
+Output:
+lua
+Copy code
+[[5 7 1]
+ [3 2 9]
+ [0 6 3]]
+
+
+16. np.random.randn()
+Description: Generates random numbers from a normal distribution.
+Example:
+python
+Copy code
+randn_arr = np.random.randn(2, 3)
+print(randn_arr)
+Output:
+lua
+Copy code
+[[ 0.37756379  0.01050002  0.61020276]
+ [ 0.08704707 -0.29900735  0.09176078]]
+
+
+17. np.random.ranf()
+Description: Generates random numbers between 0 and 1.
+Example:
+python
+Copy code
+ranf_arr = np.random.ranf(5)
+print(ranf_arr)
+Output:
+csharp
+Copy code
+[0.50535529 0.02653597 0.19883786 0.64988444 0.54494148]
+
+
+18. np.sort()
+Description: Sorts the elements of an array.
+Example:
+python
+Copy code
+sort_arr = np.sort(np.array([3, 1, 2, 5, 4]))
+print(sort_arr)
+Output:
+csharp
+Copy code
+[1 2 3 4 5]
+
+
+19. np.where()
+Description: Returns elements based on a condition.
+Example:
+python
+Copy code
+where_arr = np.where(arr > 2, arr, 0)
+print(where_arr)
+Output:
+csharp
+Copy code
+[0 0 3 4]
+
+
+20. np.copy()
+Description: Creates a copy of an array.
+Example:
+python
+Copy code
+arr_copy = np.copy(arr)
+print(arr_copy)
+Output:
+csharp
+Copy code
+[1 2 3 4]
+
+
+21. np.append()
+Description: Appends values to the end of an array.
+Example:
+python
+Copy code
+append_arr = np.append(arr, [5, 6])
+print(append_arr)
+Output:
+csharp
+Copy code
+[1 2 3 4 5 6]
+
+
+22. np.concatenate()
+Description: Concatenates arrays along a specified axis.
+Example:
+python
+Copy code
+arr1 = np.array([1, 2, 3])
+arr2 = np.array([4, 5, 6])
+concatenate_arr = np.concatenate((arr1, arr2))
+print(concatenate_arr)
+Output:
+csharp
+Copy code
+[1 2 3 4 5 6]
+
+
+23. np.add()
+Description: Adds elements of two arrays.
+Example:
+python
+Copy code
+add_arr = np.add(arr1, arr2)
+print(add_arr)
+Output:
+csharp
+Copy code
+[5 7 9]
+
+
+24. np.multiply()
+Description: Multiplies elements of two arrays.
+Example:
+python
+Copy code
+multiply_arr = np.multiply(arr1, arr2)
+print(multiply_arr)
+Output:
+css
+Copy code
+[ 4 10 18]
+
+
+25. np.dot()
+Description: Computes the dot product of two arrays.
+Example:
+python
+Copy code
+dot_arr = np.dot(arr1, arr2)
+print(dot_arr)
+Output:
+Copy code
+32
+
+
+26. np.ceil()
+Description: Rounds up to the nearest integer.
+Example:
+python
+Copy code
+ceil_arr = np.ceil(np.array([1.2, 2.7, 3.5]))
+print(ceil_arr)
+Output:
+csharp
+Copy code
+[2. 3. 4.]
+
+
+27. np.floor()
+Description: Rounds down to the nearest integer.
+Example:
+python
+Copy code
+floor_arr = np.floor(np.array([1.2, 2.7, 3.5]))
+print(floor_arr)
+Output:
+csharp
+Copy code
+[1. 2. 3.]
+
+
+28. np.around()
+Description: Rounds to the nearest integer.
+Example:
+python
+Copy code
+around_arr = np.around(np.array([1.2, 2.5, 3.7]))
+print(around_arr)
+Output:
+csharp
+Copy code
+[1. 2. 4.]
+
+
+29. np.sqrt()
+Description: Computes the square root of each element.
+Example:
+python
+Copy code
+sqrt_arr = np.sqrt(np.array([1, 4, 9]))
+print(sqrt_arr)
+Output:
+csharp
+Copy code
+[1. 2. 3.]
+
+30. np.cbrt()
+Description: Computes the cube root of each element.
+Example:
+python
+Copy code
+cbrt_arr = np.cbrt(np.array([1, 8, 27]))
+print(cbrt_arr)
+Output:
+csharp
+Copy code
+[1. 2. 3.]
+
+
+31. np.sum()
+Description: Computes the sum of all elements.
+Example:
+python
+Copy code
+sum_arr = np.sum(np.array([1, 2, 3, 4]))
+print(sum_arr)
+Output:
+Copy code
+10
+32. np.min()
+Description: Returns the minimum element.
+Example:
+python
+Copy code
+min_arr = np.min(np.array([1, 2, 3, 4]))
+print(min_arr)
+Output:
+Copy code
+1
+33. np.max()
+Description: Returns the maximum element.
+Example:
+python
+Copy code
+max_arr = np.max(np.array([1, 2, 3, 4]))
+print(max_arr)
+Output:
+Copy code
+4
+34. np.mean()
+Description: Computes the mean (average) of all elements.
+Example:
+python
+Copy code
+mean_arr = np.mean(np.array([1, 2, 3, 4]))
+print(mean_arr)
+Output:
+Copy code
+2.5
+35. np.median()
+Description: Computes the median of all elements.
+Example:
+python
+Copy code
+median_arr = np.median(np.array([1, 2, 3, 4, 5]))
+print(median_arr)
+Output:
+Copy code
+3
+36. np.std()
+Description: Computes the standard deviation of all elements.
+Example:
+python
+Copy code
+std_arr = np.std(np.array([1, 2, 3, 4]))
+print(std_arr)
+Output:
+Copy code
+1.118033988749895
+37. np.var()
+Description: Computes the variance of all elements.
+Example:
+python
+Copy code
+var_arr = np.var(np.array([1, 2, 3, 4]))
+print(var_arr)
+Output:
+Copy code
+1.25
+38. scipy.stats.mode()
+Description: Computes the mode (most frequent element) of an array.
+Example:
+python
+Copy code
+from scipy import stats
+mode_arr = stats.mode([1, 2, 2, 3, 4])
+print(mode_arr)
+Output:
+scss
+Copy code
+ModeResult(mode=array([2]), count=array([2]))
+39. np.log()
+Description: Computes the natural logarithm (base e) of all elements.
+Example:
+python
+Copy code
+log_arr = np.log(np.array([1, np.e, np.e**2]))
+print(log_arr)
+Output:
+csharp
+Copy code
+[0. 1. 2.]
+40. np.log2()
+Description: Computes the logarithm (base 2) of all elements.
+Example:
+python
+Copy code
+log2_arr = np.log2(np.array([1, 2, 4, 8]))
+print(log2_arr)
+Output:
+csharp
+Copy code
+[0. 1. 2. 3.]
+41. np.log10()
+Description: Computes the logarithm (base 10) of all elements.
+Example:
+python
+Copy code
+log10_arr = np.log10(np.array([1, 10, 100, 1000]))
+print(log10_arr)
+Output:
+csharp
+Copy code
+[0. 1. 2. 3.]
+42. np.linalg.solve()
+Description: Solves a linear matrix equation or system of linear scalar equations.
+Example:
+python
+Copy code
+A = np.array([[3, 1], [1, 2]])
+b = np.array([9, 8])
+x = np.linalg.solve(A, b)
+print(x)
+Output:
+csharp
+Copy code
+[2. 3.]
+43. np.linalg.inv()
+Description: Computes the inverse of a matrix.
+Example:
+python
+Copy code
+inv_arr = np.linalg.inv(A)
+print(inv_arr)
+Output:
+lua
+Copy code
+[[ 0.66666667 -0.33333333]
+ [-0.33333333  1.        ]]
+44. np.sin()
+Description: Computes the sine of each element.
+Example:
+python
+Copy code
+sin_arr = np.sin(np.array([0, np.pi/2, np.pi]))
+print(sin_arr)
+Output:
+csharp
+Copy code
+[0.000000e+00 1.000000e+00 1.224647e-16]
+45. np.cos()
+Description: Computes the cosine of each element.
+Example:
+python
+Copy code
+cos_arr = np.cos(np.array([0, np.pi/2, np.pi]))
+print(cos_arr)
+Output:
+css
+Copy code
+[ 1.000000e+00  6.123234e-17 -1.000000e+00]
+46. np.tan()
+Description: Computes the tangent of each element.
+Example:
+python
+Copy code
+tan_arr = np.tan(np.array([0, np.pi/4, np.pi/2]))
+print(tan_arr)
+Output:
+csharp
+Copy code
+[0. 1. 1.63312394e+16]
+47. np.deg2rad()
+Description: Converts degrees to radians.
+Example:
+python
+Copy code
+rad_arr = np.deg2rad(np.array([0, 90, 180]))
+print(rad_arr)
+Output:
+csharp
+Copy code
+[0.         1.57079633 3.14159265]
+48. np.rad2deg()
+Description: Converts radians to degrees.
+Example:
+python
+Copy code
+deg_arr = np.rad2deg(np.array([0, np.pi/2, np.pi]))
+print(deg_arr)
+Output:
+css
+Copy code
+[  0.  90. 180.]
+49. np.pi
+Description: Mathematical constant π.
+Example:
+python
+Copy code
+print(np.pi)
+Output:
+Copy code
+3.141592653589793
+50. np.e
+Description: Mathematical constant e.
+Example:
+python
+Copy code
+print(np.e)
+Output:
+Copy code
+2.718281828459045

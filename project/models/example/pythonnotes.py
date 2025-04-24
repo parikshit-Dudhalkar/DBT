@@ -179,7 +179,8 @@ print(describe_person("Alice", 30, city="New York", job="Engineer"))
 # Output: Alice is 30 years old. city: New York. job: Engineer.
 
 ===Lambda Functions===
-Definition: Lambda functions are small anonymous functions defined using the lambda keyword. They are often used for short, simple operations.
+Definition: Lambda functions are small anonymous functions defined using the lambda keyword.
+They are often used for short, simple operations.
 
 Examples:
 
@@ -200,7 +201,8 @@ print(squared)  # Output: [1, 4, 9, 16, 25]
 
 3. Modules and Packages
 Importing Modules
-Definition: Modules are files containing Python code. You can import these modules into your code to use their functions, classes, or variables.
+Definition: Modules are files containing Python code.
+You can import these modules into your code to use their functions, classes, or variables.
 
 Examples:
 
@@ -242,7 +244,8 @@ data = {"name": "Alice", "age": 30}
 json_string = json.dumps(data)
 print(json_string)  # Output: {"name": "Alice", "age": 30}
 Creating and Using Packages
-Definition: Packages are directories containing multiple modules and an __init__.py file. They help in organizing related modules and code.
+Definition: Packages are directories containing multiple modules and an __init__.py file. 
+They help in organizing related modules and code.
 
 Examples:
 
@@ -643,7 +646,8 @@ with open('data.json', 'r') as file:
     data = json.load(file)
     print(data)
 3. Context Managers
-Definition: Context managers are used to handle resources (e.g., files, network connections) efficiently by ensuring they are properly cleaned up after use, typically using the with statement.
+Definition: Context managers are used to handle resources (e.g., files, network connections) 
+efficiently by ensuring they are properly cleaned up after use, typically using the with statement.
 
 Examples:
 
@@ -721,7 +725,9 @@ These examples demonstrate how to handle file operations, work with CSV and JSON
 ==========================================================================
 ==========================================================================
 1. Exceptions
-Definition: Exceptions are errors that occur during program execution. Python provides a way to handle these errors using exception handling mechanisms to prevent the program from crashing and to provide meaningful error messages.
+Definition: Exceptions are errors that occur during program execution. 
+Python provides a way to handle these errors using exception handling mechanisms to prevent the program 
+from crashing and to provide meaningful error messages.
 
 Examples:
 

@@ -1,0 +1,379 @@
+
+
+
+BHP- Austrelia
+Adline
+Last 4 days
+Copper , Silver, Gold, 
+
+
+Project
+ 
+Page 1 --
+ 
+KPI - CCV Non Compliances
+KPI - Field Leadership Activities
+KPI - Hazards Identified
+KPI - Action Closed
+KPI - Schedule CCV Outstanding
+KPI - Quality Event Completed
+KPI - Hazards open
+KPI - Action Overdue
+ 
+ 
+Creating Calender
+ 
+	Calender = var mindate=year(min(trif[date]))
+	var maxdate=year(max(trif[date]))
+	Return
+	AddColumne(
+	filter( CalenderAuto(),
+	year([Date])>mindate,
+	year([Date])<year(Today))
+	)
+	,"EOM", EOM([Date],0),
+	"Monthodyear",FORMAT([Date],"MMM-YYYY")
+	)
+	 
+ 
+table graph line tree map
+ 
+ 
+ 
+Loading all the table from database such as snowflake, joining them with the help of EventId and some with Date
+Creating calender from calender function . Also creating EOMONTH for all dates
+We can use calenderauto as well
+ 
+Creating Datefilter table-
+ 
+	by using union operator we created Filter table which can we use as calender where we have ytd, lastmonth,currentmonth,last 6 days
+	 
+	 DateFilter = 
+var _Today=TODAY()
+var _EOPMonth = EOMONTH(_Today,-1)
+var _EO1PMonth = EOMONTH(_Today,-2)
+var _CurrQuarterStart = DATE ( YEAR ( _Today), ROUNDUP ( DIVIDE ( MONTH ( _Today ),3 ),0 ) *3 -2, 1)
+var _CurrQuarterEnd = EOMONTH ( _CurrQuarterStart,2 )
+var _PrevQuarterDate = _CurrQuarterStart-95
+var _FYStartDate = DATE(Year(_Today)-1,7,1)
+var _LFYStartDate = DATE(Year(_Today)-2,7,1)
+var _CurrentFYYear = IF(MONTH(_Today) >= 7 ,YEAR(_Today),YEAR(_Today)-1)
+var _PreviousFYTD = DATE(_CurrentFYYear-1,7,1)
+var _CurrentFY = DATE(_CurrentFYYear,7,1) 
+var _CurrentFYEnd = DATE(_CurrentFYYear+1,7,1)-1
+
+RETURN 
+UNION(
+
+ADDCOLUMNS(
+    CALENDAR(_Today - WEEKDAY(_Today,2)+1,_Today),
+"Filter","Current Week"
+,"Order",0
+),
+ADDCOLUMNS(
+    CALENDAR(_Today - WEEKDAY(_Today,2)-6,_Today - WEEKDAY(_Today,2)),
+"Filter","Last Week"
+,"Order",1
+),
+ADDCOLUMNS(
+    CALENDAR(_EOPMonth+1,_Today),
+"Filter","Current Month","Order",2
+),
+ADDCOLUMNS(
+    CALENDAR(_EOPMonth+1,_Today),
+"Filter","MTD","Order",2
+),
+ADDCOLUMNS(
+    CALENDAR(_Today - 30,_Today),
+"Filter","Last 30 Days","Order",3
+),
+ADDCOLUMNS(
+    CALENDAR(_Today - 31,_Today),
+"Filter","Previous 31 Days","Order",3
+),
+ADDCOLUMNS(
+    CALENDAR(_Today - 1,_Today-1),
+"Filter","Yesterday","Order",3
+),
+ADDCOLUMNS(
+    CALENDAR(_Today ,_Today),
+"Filter","Today","Order",3
+),
+ADDCOLUMNS(
+    CALENDAR(_Today-7,_Today),
+"Filter","Previous 7 Days","Order",3
+),
+ADDCOLUMNS(
+    CALENDAR(_EO1PMonth+1,_EOPMonth),
+"Filter","Last Month","Order",4
+)
+,
+ADDCOLUMNS(
+    CALENDAR(_EO1PMonth+1,_EOPMonth),
+"Filter","Previous Month","Order",4
+)
+,
+ADDCOLUMNS(
+    CALENDAR(_CurrQuarterStart,_CurrQuarterEnd),
+"Filter","Current Quarter","Order",5
+),
+ADDCOLUMNS(
+    CALENDAR(_CurrQuarterStart,_CurrQuarterEnd),
+"Filter","QTD","Order",5
+),
+ADDCOLUMNS(
+    CALENDAR(EOMONTH(_PrevQuarterDate,0)+1,_CurrQuarterStart-1),
+"Filter","Last Quarter","Order",6
+),
+ADDCOLUMNS(
+    CALENDAR(_PreviousFYTD,_CurrentFY-1),
+"Filter","Last Year (FY)","Order",9
+),
+ADDCOLUMNS(
+    CALENDAR(_CurrentFY,_CurrentFYEnd),
+"Filter","YTD(FY)","Order",10
+),
+ADDCOLUMNS(
+    CALENDAR(_LFYStartDate,_Today),
+"Filter","Enter Dates","Order",11
+)
+)
+
+Enable load - If we diselect this in transform then it will not  load into the model
+Include in Report Refresh - It will enable of disable the refresh of the table while we perform bach refresh
+column profiling -  Provide in depth view of column quality, distribution, distict value, empty,errors, 
+custom calender in transform using m code 
+index column -  
+ 
+Normalization
+
+Relationship vs Merged Table
+
+library
+
+how to push to git 
+
+snowflake
+dev pipline
+
+=============================================*****************************======================================================
+
+
+
+	 
+	I derived KPI's from Event Id , KPI such as CCV Non Compliance (Critical control Verifications),
+	How many event have are from Hazard category
+	How many actions are open and closed and overdue, by calculating event id where status code = overdue 
+	How many injuries are recorded , what are the total significant incident ,homany many are open,
+	Total incident, how many incident are overdue
+	this all are 
+	
+1st page Summary
+2nd page Quality
+	Here we calculated how many event are completed for Quality category
+	How many field leadership activity event for quality event category
+	created stacked column chart with month-year on x-axis and count of event Id 
+	with Quality category in Y-axis and event type of legend
+	 
+	concatMonthYear = CONCATENATE(LEFT(Event[Date Reported].[Month],3),CONCATENATE("-",RIGHT(Event[Date Reported].[Year],2))) and used filter for fiscal year
+	 
+	Also created clusterd bar chart for Quality event by top 5 workgroup by event count with filter as event category as quality
+	Also created Treemap of count event id by Event Type
+	Also ctreated detailed report with event id, date reported, its status , its department and summary
+
+Same page3 we created for Hazards
+ 
+ 
+ 
+Action page 4
+	KPI -- Closed Action, Open Action, Due within 7 days , Overdue Action
+	Also created charts and tables
+	Bar chart - Action due within 7 days
+	Bar chart-- Action overdue by work group
+	Management, sales&marketting, Legal,
+	 
+	Column chart - count of action events by monthyear on each status
+	Also created action overdue and open list
+	 
+Injury/Illness -Page 5
+
+	In this page 
+
+
+	KPI - Day since last injury Recorded till today
+	Recordable Injury/Illness
+	Total Injury
+	 
+	Stacked column chart -- Number of Injury to the yearmonth by Injury Type Name
+	Injury type -- Not work related, First Aid, Lost Time,medical treatment, restricted work
+	 
+	bar chart - Number of Injuries by Mechanism- exposure to heat and cold, contact with chemical , hit by moving object
+	TreeMap - Count of body part by injury category
+	 
+	Scatter Plot-
+	 
+	 Used Switch statement with Body Part column as swtich column a
+	 It returns the result depending on  value of expression
+	 created scatter plot with giving manual co-ordinates for each body part and giving count of each Injury ID in size
+	 
+
+	 
+ Incidents - page 6
+ 
+	 Here KPI- Days since last significant incident - count days 
+	 Total significant incident - count 
+	 Near Miss incident -count
+	 Reportable incident - govermental filter 
+	 Incident resolution per days 
+	 Graphs - 
+	 status count of incident event by event id and category filter = status is inprogress or open to each month year and status as legend 
+	  status count of incident resolved  event by event id and category filter = status is inprogress , closed, in progress, pending
+	  to each resolution status like within 7 days , within 15 days, overdue, overdue  within  15 days 
+	  Top 5 incident  status  by workgroup 
+	  Also detailed table of all this event
+	 
+ 
+ TRIF - page 10
+ 
+ 
+challenges faced - daily challenges such as data connectivity issues.
+Creating DAX function for required output , for handling issues, uses various sites in google , youtube
+Data cleaning - to check null value, duplicate records, errors, changing data type
+has context menu
+
+
+ ---------------------------------***********-------------------=======================================================---------
+ ----------------------------------------------------=======================================================---------
+ ----------------------------------------------------=======================================================---------
+ ----------------------------------------------------=======================================================---------
+ ----------------------------------------------------=======================================================---------
+ 	 
+
+	In my recent project, I worked with a mining company in Australia, where we developed a range of reports to enhance safety and operational transparency. 
+	One of the key reports I created was the "Hill Safety Report" This report was designed to capture and display various events that occurred within the
+	mining operations, classified by different categories and departments.
+
+	We tracked multiple event types, such as activities, actions taken, hazards identified, injuries, and incidents. 
+	The aim was to provide a clear and comprehensive view of the safety and events within the organization.
+	For more insights, we include stacked column charts, bar charts,and scatter plots to analyze incidents by category, department, and event type. 
+	We also focused on key performance indicators like the number of days since the last incident, total injury counts, and incident resolution rate,
+	which were presented as KPIs for easy tracking.
+
+
+
+	For Filter we created one filter column where we calculate various date range based on  the current date , making it flexible  and adaptable.
+	I used DAX functions to handle complex calculations, such as determining days since the last significant event, analyzing day since the incident is open 
+	in incident resolution times, and segmenting data by status (open, in progress, resolved). 
+	The report also featured interactive filters, allowing users to drill down by different workgroups or incident categories.
+
+	On the backend, I was responsible for fetching the required data from our SQL database. I wrote complex SQL queries to extract 
+	and aggregate the data, which involved joining multiple tables, using subqueries, and performing calculations to ensure that the 
+	data was accurate and ready for visualization. The SQL queries helped me handle large datasets and provided the foundation for the Power BI reports.
+	Overall, this project allowed me to showcase my skills in both Power BI for data visualization and SQL for data extraction and manipulation. 
+	The result was a user-friendly, insighful reporting tool that helped stakeholders in the mining industry monitor and improve safety measures effectively.
+
+
+
+
+	Q1. How did you calculate Resolution Rate (Days)
+
+--> 	
+		sum of events we calculated by DateDiff between Event Date reported and closed date , if closed date is blank  then currentDate
+
+		After that we calculate Resolution Rate 
+	    sum of event date = DATEDIFF(Event[Date Reported],IF(Event[Closed Date] = BLANK(),TODAY(),Event[Closed Date]),DAY)
+		Resoltion Rate (Days) = SUM(Event[sum of event date])/ DISTINCTCOUNT(Event[Event Id])
+
+
+	Q2. How did you calculated Significant day since last incident happened?
+
+-->
+		Max of event date and current date dateDiff
+
+
+	Q3. What Filter column you have created , explain in detailed
+
+-->		
+
+		This DAX code creates a calculated table in Power BI that enables dynamic date filtering by defining key date variables using functions
+
+		like `TODAY()`, `EOMONTH()`, and `DATE()`. It utilizes the `UNION` function to combine multiple date ranges, each defined by `ADDCOLUMNS`, 
+
+		resulting in filters for various time frames: **Current Week**, **Last Week**, **Month-to-Date (MTD)**, **Last 30 Days**, 
+
+		**Previous 31 Days**, **Yesterday**, **Today**, **Previous 7 Days**, **Last Month**, **Current Quarter**, **Last Quarter**,
+
+		**Last Year (Fiscal Year)**, **Year-to-Date (YTD)**, and **Enter Dates**. Each entry in the table includes the fields 
+
+		**"Filter"** for the time period label and **"Order"** for sorting, facilitating effective time-based data segmentation 
+
+		and enhancing reporting capabilities for deeper insights.														
+ 
+ 
+
+	Q4. How did you calculate Total Injury Count
+	
+-->		
+		Row count injuries = COUNTROWS(INJURIES)+0
+		
+		
+	Q5.
+	
+	
+	
+
+	Q6. Can you provide a brief overview of the “Hill Safety Report” project and its main objectives?
+	
+	Q7. What were the key challenges you faced during this project, and how did you overcome them?
+	
+	
+	Q8. How did you decide which types of charts (stacked column, bar, scatter plots) to use for different data insights?
+
+-->
+		We need to calculate Stacked column chart to identify how many days since incidents are open , so we first created calculated column
+		so that we will have group such as Incident within 7 days , Within 15 days,  within 30 days. And so on,
+		Days_open = IF(Event[Closed Date] = BLANK(),TODAY()-Event[Date Reported],Event[Closed Date]-Event[Date Reported])
+		this we use to get number of days, which we used later as a criteria.
+		
+		Other chart we created was Incident By date and status . We extract year-month from date and use this in x -axis
+		
+		For y-axis we used count of event id and for legend  first get overdue status by creating calculated column  
+		
+		Status_Overdue = IF(Event[Status Code]="Closed","Closed",IF(TODAY()-Event[Date Reported]>30,"Overdue",Event[Status Code]))
+		
+	Q9.	Can you explain how you implemented interactive filters in Power BI and their impact on the report’s usability?
+
+-->		Department , Year Filter, Page level filter - We filter source system Name- It was code like INX_PHO
+		
+
+
+		
+	Q10. What specific DAX functions did you use to calculate the days since the last significant event and analyze days since incident is open?
+	
+-->		 Max of event date and current date dateDiff
+		 
+		
+
+	Q11. How did you handle complex calculations and ensure their accuracy in your reports?
+	
+-->		 
+		
+		
+	Q12. Can you describe the process of writing and optimizing SQL queries to fetch and aggregate data for your reports?
+	
+	Q13. How did you ensure the data extracted from multiple tables was accurate and ready for visualization?
+	
+	Q14. What KPIs did you track in the “Hill Safety Report,” and why were they important for the stakeholders?
+	
+	Q15. How did you present these KPIs in a way that was easy for stakeholders to understand and act upon?
+	
+	Q16. How did you manage and integrate large datasets from the SQL database into Power BI?
+	
+	Q17. Can you discuss any specific techniques or tools you used to handle data segmentation by status (open, in progress, resolved)?
+	
+	Q18. What was the overall impact of the “Hill Safety Report” on the mining company’s safety and operational transparency?
+	
+	Q10. Can you share any feedback or results from stakeholders after implementing the report?
+	
+	
+	

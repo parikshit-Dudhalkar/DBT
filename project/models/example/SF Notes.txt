@@ -219,3 +219,6 @@ Key Points:
 •	Temporary Table Precedence: The temporary table will take precedence over the permanent table within the session. Any operations performed on permanent_employee will affect the temporary table.
 •	Session Scope: The temporary table exists only for the duration of the session. Once the session ends, the temporary table is dropped automatically, and the permanent table becomes accessible again.
 
+https://medium.com/@a.kaushik5587/what-makes-snowflake-so-powerful-its-the-hybrid-of-shared-disk-and-shared-nothing-architecture-5b4fa8f039fa
+
+select get_ddl('table','my_table'); -- will get ddl of the current table 

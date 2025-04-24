@@ -1,0 +1,143 @@
+Here’s a set of technical interview questions and answers based on the Infosys Snowflake Developer job description.
+---
+1. Snowflake Architecture
+Q: Can you explain Snowflake's architecture?
+A: Snowflake follows a multi-cluster, shared-data architecture. It separates storage, compute, and services, 
+    allowing independent scaling. Data is stored in a compressed columnar format on cloud storage, while compute power 
+    is provided through virtual warehouses. The cloud services layer manages metadata, authentication, and optimization.
+---
+2. Virtual Warehouses & Autoscaling
+Q: What is a Virtual Warehouse in Snowflake, and how does autoscaling work?
+A: A Virtual Warehouse (VW) is a compute resource used for query execution in Snowflake. 
+  It can scale horizontally (adding clusters in multi-cluster mode) and vertically (increasing warehouse size). 
+  'Autoscaling enables Snowflake to add or suspend clusters automatically based on workload demands.
+---
+3. Micro-Partitions & Clustering
+Q: What are micro-partitions in Snowflake, and why are they important?
+A: Micro-partitions are compressed columnar storage units, automatically created when data is loaded into a table. 
+   They help in pruning unnecessary data, improving query performance.
+   
+Q: When should you use table clustering in Snowflake?
+A: Clustering is needed when queries frequently filter data on non-natural clustering keys, ensuring better pruning and faster execution. 
+   If queries scan too many micro-partitions, clustering should be implemented.
+---
+4. Performance Optimization & Query Profile
+Q: How do you analyze and optimize queries in Snowflake?
+A: Use Query Profile to examine execution steps, pruning, join operations, and query execution time. Optimization strategies include:
+Choosing the right cluster key
+Using materialized views
+Leveraging result caching
+Using CTEs instead of subqueries
+Ensuring proper data partitioning
+---
+5. Materialized Views & Time Travel
+Q: What are the benefits of Materialized Views in Snowflake?
+A: Materialized Views store precomputed results for frequently used queries, reducing query execution time. 
+However, they incur costs due to auto-refreshing.
+Q: How does Time Travel work in Snowflake?
+A: Time Travel allows querying historical data using the AT or BEFORE clause. It supports restoring deleted or modified data. 
+   The retention period is 1-90 days, depending on the Snowflake edition.
+---
+6. SnowPipe, Streams, and Stages
+Q: How does SnowPipe work for real-time data loading?
+A: SnowPipe enables continuous data ingestion from cloud storage using auto-ingest. 
+  It loads data in micro-batches without manual intervention, reducing compute costs.
+Q: What are Streams in Snowflake?
+A: Streams track changes (INSERT, UPDATE, DELETE) in a table for CDC (Change Data Capture) operations.
+Q: What is the difference between Named Stages and Internal Stages?
+A:
+Internal Stages are managed by Snowflake (USER, TABLE, INTERNAL).
+Named Stages are explicitly created by users and offer more flexibility in managing staged data.
+---
+7. Query Performance Tuning
+Q: What are some techniques for improving Snowflake query performance?
+A:
+1. Leverage Result Cache – Snowflake caches results for 24 hours.
+2. Micro-partition Pruning – Optimize WHERE clause filtering.
+3. Choose an optimal Cluster Key – For better partition pruning.
+4. Use Materialized Views – For repetitive aggregations.
+5. Use Proper Joins – Avoid cartesian joins and prefer hash joins.
+6. Optimize Virtual Warehouse Size – Scale compute based on workload.
+---
+8. Python & Data Pipelines
+Q: How do you build a data pipeline in Snowflake using Python?
+A: Using Snowflake Connector for Python, you can extract, transform, and load (ETL) data. Example:
+import snowflake.connector 
+conn = snowflake.connector.connect( 
+    user='your_user', 
+    password='your_password', 
+    account='your_account' 
+) 
+cur = conn.cursor() 
+cur.execute("SELECT * FROM my_table LIMIT 10") 
+for row in cur.fetchall(): 
+    print(row) 
+cur.close() 
+conn.close()
+Q: What are some Python libraries used for Data Processing in Snowflake?
+A:
+pandas, numpy – Data manipulation
+matplotlib, seaborn – Data visualization
+snowflake-connector-python – Query execution
+sqlalchemy – ORM for Snowflake
+
+---
+
+9. Zero Copy Cloning & Data Sharing
+Q: What is Zero Copy Cloning in Snowflake?
+A: It allows creating instant copies of tables, schemas, or databases without duplicating storage.
+Q: How does Data Sharing work in Snowflake?
+A: Snowflake enables secure data sharing between accounts without moving or copying data, using Secure Views or Secure Data Sharing.
+---
+10. Advanced SQL & Recursive Queries
+Q: Write a recursive query in Snowflake to find an employee hierarchy.
+A:
+WITH RECURSIVE EmployeeHierarchy AS (
+    SELECT EmployeeID, ManagerID, EmployeeName
+    FROM Employees
+    WHERE ManagerID IS NULL  -- Top-Level Manager
+    UNION ALL
+    SELECT e.EmployeeID, e.ManagerID, e.EmployeeName
+    FROM Employees e
+    INNER JOIN EmployeeHierarchy eh ON e.ManagerID = eh.EmployeeID
+)
+SELECT * FROM EmployeeHierarchy;
+This fetches the employee hierarchy using recursive CTEs.
+---
+
+
+HR & Behavioral Questions
+11. General HR Questions
+Q: Why do you want to join Infosys?
+A: Infosys is a leader in cloud and data engineering, offering an opportunity to work with advanced Snowflake implementations. 
+   The company fosters innovation, and I want to contribute by leveraging my SQL, Snowflake, and Python expertise.
+   
+Q: Describe a challenging project you worked on.
+A: In my last role, I worked on a complex data pipeline in Snowflake, where performance issues were impacting ETL jobs. 
+   By optimizing query structures, selecting the right cluster keys, and implementing SnowPipe, we improved query performance by 40%.
+
+Q: How do you handle tight deadlines?
+A: I prioritize tasks, break them into manageable components, and collaborate with stakeholders. In a recent project, 
+   I reduced ETL processing time by 30% by analyzing query execution plans and using materialized views.
+
+
+
+---
+
+Final Notes
+1. Review Query Profile Analysis – Snowflake-specific performance tuning
+2. Revise Python Snowflake Connector – Essential for ETL & reporting
+3. Prepare real-world examples – Query optimization & SnowPipe
+4. Understand Multi-Cluster Warehouses – Cost vs. performance scenarios
+5. Practice Snowflake SQL Queries – Window functions, recursive CTEs, query rewriting
+Would you like me to refine any answers or add scenario-based questions?
+
+
+
+
+
+
+
+
+
+ 
