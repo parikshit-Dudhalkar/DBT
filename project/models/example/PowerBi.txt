@@ -1,0 +1,1070 @@
+
+
+Attrition Rate % =
+VAR TotalEmployees = SUM(HR_Analytics[EmployeeCount])
+VAR AttritionCount = CALCULATE(SUMX(HR_Analytics, IF(HR_Analytics[Attrition] = "Yes", 1, 0)))
+RETURN DIVIDE(AttritionCount, TotalEmployees) * 100
+
+
+Attrition Rate = sumx(HR_Analytics,If(HR_Analytics[Attrition]="Yes",1,0))
+
+
+Attrition perct = ([Attrition Rate])
+/
+SUM(HR_Analytics[EmployeeCount] )* 100
+
+
+perct%=
+
+-------------------------------------------------
+
+
+---------------------------------------------------
+
+
+seller_count = var val = CALCULATE(COUNT('Amazon Fashion'[Saller ID]),CONTAINSSTRING('Amazon Sales'[Status],"Delivered"))
+RETURN If(val=BLANK(),"0",val )
+
+------------------------------------------------------
+Sales_on = var _select_img = SELECTEDVALUE(Sales_Option[Type])
+var _img= "https://www.shutterstock.com/image-vector/black-check-mark-icon-tick-600nw-590651921.jpg"
+RETURN IF(_select_img="1",_img)
+
+------------------------------------------------------
+Sales_on2 = var _select_img = SELECTEDVALUE(Sales_Option[Type])
+var _img= "https://www.shutterstock.com/image-vector/black-check-mark-icon-tick-600nw-590651921.jpg"
+RETURN IF(_select_img="2",_img)
+
+-----------------------------------------------------
+Filter_sale = var _select = SELECTEDVALUE(Sales_Option[Type])
+RETURN If(_select="1",'Amazon Sales'[Total_sales],[Total_QYT])
+
+
+SUM
+SUMX
+FILTER
+CALCULATE
+COUNT
+COUNTX
+RANKX = RANKX(ALL(order[city],[sale_value],,DESC)
+PATHCONTAINS
+PATH
+ALL
+SUMARIZE
+
+
+Attrition Rate % =
+VAR TotalEmployees = SUM(HR_Analytics[EmployeeCount])
+VAR AttritionCount = CALCULATE(SUMX(HR_Analytics, IF(HR_Analytics[Attrition] = "Yes", 1, 0)))
+RETURN DIVIDE(AttritionCount, TotalEmployees) * 100
+
+
+Attrition Rate = sumx(HR_Analytics,If(HR_Analytics[Attrition]="Yes",1,0))
+
+
+Attrition perct = ([Attrition Rate])
+/
+  SUM(HR_Analytics[EmployeeCount] )* 100
+
+
+  perct%=
+
+
+
+-------------------------------------------------
+
+Experienced Professional in Operations, Stakeholder Management, Customer Success, Start-ups, Digital marketing, Product Management, Data Analysis
+
+Tools Covered - Advance Excel, Postgresql, PgAdmin 4, Google Analytics, Dbeaver, Figma,Jira service management, Rstudio, Python, Statistics, Power Bi
+
+---------------------------------------------------
+
+
+
+----------------------------------------------------
+File Combine:-
+
+To select multiple files from same folder path and append all the data we need to select folder from Get Data then select folder path
+then all the files inside that folder  will appear all files will appear and will have option to combine data or transform data.
+If you select combine and load then data from all files will append and load with one extra column Source.Name
+and if you choose transform data then you will get content column,Name, extension,dateaccessed,datemodified,etc
+remove other column and create one custom column Excel.Workbook([Content]) keep content and custom and extract custom column. it will give you data from all sheets.
+then keep Name and Data column and remove other column then  extract Data column you will get data from all the sheet then you can filter out unwanted data and load it.
+
+
+Row level security:-
+
+For row level security when we have hierarchy details first need to create path column in Useraccess information table
+ after that we can use PATHCONTAINS DAX in Manage role ,after creating role it will automatically fetch user access according to
+ USERPRINCIPALNAME()
+
+we need to create roles based of USERPRINCI	PALNAME() and for testing we can check with  view as user option
+
+
+Incremental Refresh:-
+
+In transform data create 2 parameter from Manage parameter RangeStart and RangeEnd
+Then filter the datefield (e.g. orderdate) with these parameter ,filter with- is after or equal to RangeStart and is before to RangeEnd
+then go to Report view and click on data field in which table you want to add incremental refresh click on tab and select table and set date
+for historical and reshresh date .
+
+
+Slicer:-
+visual filter that allow users to segment and filter data dynamically on report page.
+
+
+1. Which type of chart will you use to compare and show the sales by region in Power BI?
+==>
+	A bar chart or column chart is typically used. These charts are effective for comparing data across different categories, such as regions, and they clearly display differences in sales values.
+How can you create a calculated column in Power BI to show the profit margin percentage?
+
+Answer:
+
+To create a calculated column in Power BI to show the profit margin percentage, follow these steps:
+
+1. Go to the Data view in Power BI Desktop.
+2. Select the table where you want to create the new column.
+3. Click on the New Column button in the Modelling tab.
+4. Enter the formula for the calculated column. For example:
+   Profit Margin = (Sales - Cost) / Sales * 100
+5. Press Enter.
+
+This will create a new column in your table showing the profit margin percentage for each row.
+
+3. What is the difference between a measure and a calculated column in Power BI?
+
+Answer:
+
+	The key difference between a measure and a calculated column in Power BI is how and when they are calculated and used:
+
+	- A calculated column is calculated row by row when the data is loaded into the data model. 
+	  It is stored in the table and can be used like any other column in the table.
+	- A measure, on the other hand, is calculated on the fly based on the context of the visualization. 
+	  Measures are typically used for aggregations, such as sums, averages, or counts, and they are not stored in the table but are recalculated as needed.
+
+4. How would you handle a situation where your Power BI report is performing slowly?
+
+Answer:
+
+To handle a situation where a Power BI report is performing slowly, you can:
+
+1. Optimize your data model by removing unnecessary columns and tables.
+2. Use relationships and filtering carefully to minimize the amount of data processed.
+3. Avoid using complex DAX calculations in visuals; instead, create calculated columns or tables if needed.
+4. Use aggregate tables or pre-aggregated data to reduce the volume of data processed in visuals.
+5. Ensure that your data source is optimized for performance, such as indexing important columns or partitioning large tables.
+6. Use Power BI Performance Analyzer to identify and troubleshoot performance bottlenecks in your report.
+
+
+
+
+1. How can you ensure that Power BI recognizes a specific column as a date column if it doesn't' do so automatically?
+   - You can change the data type of the column in Power Query Editor or in the Data View. 
+     Select the column, then use the data type dropdown to select "Date" or "Date/Time."
+
+2. Describe the process Power BI uses to handle large datasets exceeding the in-memory capacity.
+   - Power BI can handle large datasets by using techniques such as aggregations, incremental refresh, and DirectQuery mode. 
+     DirectQuery allows Power BI to query data directly from the source without loading it into memory,
+     while aggregations can summarize data at a higher level to reduce the amount of data processed.
+
+3. Can you explain the role of the Power BI service in the overall Power BI architecture?
+   - The Power BI service (PowerBI.com) is a cloud-based service that provides various features like sharing, collaboration, and dashboarding.
+	 It allows users to publish, share, and manage reports, create dashboards, and collaborate with others in their organization. 
+	 It also supports data refresh, scheduled refreshes, and gateways to connect to on-premises data sources.
+
+4. What are the key components of data modeling in Power BI?
+   - The key components of data modeling in Power BI include tables, relationships, measures, calculated columns, and hierarchies. 
+     Data modeling involves defining how data from different sources relates to each other and creating a model that supports analysis and reporting.
+
+5. What is the purpose of the VertiPaq engine in Power BI?
+   - The VertiPaq engine is an in-memory columnar database engine used by Power BI to compress and store data efficiently. It allows for fast query performance by storing data in a highly compressed format and retrieving only the necessary columns for a given query.
+
+6. How do you create a stacked area chart in Power BI?
+   - To create a stacked area chart, go to the Report View, select the data fields you want to visualize, and then choose the "Stacked Area Chart" option from the visualizations pane.
+
+7. What is the difference between a clustered bar chart and a stacked bar chart?
+   - A clustered bar chart displays bars for each category grouped side by side, allowing for comparison between categories. A stacked bar chart, on the other hand, stacks the bars on top of each other, showing the total value while also displaying the contribution of each category to the total.
+
+8. Explain the concept of role-based access control (RBAC) in Power BI.
+   - Role-based access control (RBAC) in Power BI allows administrators to define roles with specific permissions and assign users to these roles. 
+     This ensures that users only have access to the data and reports they are authorized to view, enhancing security and data governance.
+
+9. What is a calculated column in Power BI, and how is it different from a measure?
+   - A calculated column is a column that is created using a DAX formula to add new data to a table in the data model. It is calculated row by row. 
+     A measure, however, is a DAX formula used to perform calculations on aggregated data, and its result can change depending on the context of the report or visualization.
+
+10. How can you create and apply a custom data category in Power BI?
+    - You can create and apply a custom data category by selecting the column in the Data View or Power Query Editor, and then choosing the appropriate data category from the "Modeling" tab in the ribbon. 
+	  Custom data categories can include geographic data, URLs, and other types.
+
+11. What are the different methods to optimize data load performance in Power BI?
+    - Methods to optimize data load performance include using DirectQuery mode for real-time queries, reducing the number of columns and rows loaded into memory, 
+	  using aggregations to summarize data, optimizing data transformations in Power Query, and leveraging incremental refresh for large datasets.
+	
+	
+12. Can you outline the Power BI ecosystem and its major components?
+    - The Power BI ecosystem consists of Power BI Desktop, Power BI Service, Power BI Mobile, Power BI Report Server, and Power BI Embedded. Power BI Desktop is used for creating reports and dashboards, the Power BI Service is a cloud-based platform for sharing and collaboration, Power BI Mobile allows viewing reports on mobile devices, Power BI Report Server is for on-premises report deployment, and Power BI Embedded is for integrating Power BI reports into custom applications.
+
+13. What is the difference between a dataflow and a dataset in Power BI?
+    - A dataflow is a collection of data transformation processes in Power BI that are reusable and can be shared across multiple reports and datasets. A dataset, on the other hand, is a single source of data created from one or more data sources that is used in Power BI reports and dashboards.
+
+14. How does the DirectQuery mode work in Power BI, and when would you use it?
+    - DirectQuery mode allows Power BI to directly query the underlying data source in real-time without importing data into memory. 
+	  This mode is useful when working with very large datasets, ensuring data is always up-to-date, and minimizing the amount of data loaded into memory.
+
+15. How do you create a waterfall chart in Power BI?
+    - To create a waterfall chart, go to the Report View, select the data fields you want to visualize, and then choose the "Waterfall Chart" option from the visualizations pane. 
+	  This type of chart shows the cumulative effect of sequential positive and negative values.
+
+16. What are the advantages and disadvantages of using a scatter plot in Power BI?
+    - Advantages: Scatter plots can show the relationship between two numerical variables, highlight clusters and outliers, and reveal trends and correlations. Disadvantages: They can become cluttered with too many data points, making it hard to interpret, and may require additional context to understand the data fully.
+
+17. Explain the concept of incremental refresh in Power BI.
+    - Incremental refresh allows Power BI to refresh only the data that has changed or been added since the last refresh, rather than reloading the entire dataset. This reduces the time and resources required for data refreshes, making it suitable for large datasets with frequent updates.
+
+18. What is the purpose of the "Group By" feature in Power BI, and how is it used?
+    - The "Group By" feature in Power BI allows users to group rows in a table based on one or more columns and perform aggregations (e.g., sum, average) on the grouped data. It is used in the Power Query Editor to simplify and summarize data before loading it into the data model.
+
+19. How can you handle time zone conversions in Power BI?
+    - Time zone conversions can be handled by using DAX functions to adjust date and time values based on the desired time zone. You can use functions like TIMEZONEOFFSET to calculate the difference between time zones and adjust the datetime values accordingly.
+
+20. What techniques can be used to reduce the file size of a Power BI report?
+    - Techniques to reduce file size include removing unnecessary columns and rows, using aggregations to summarize data, optimizing data transformations in Power Query, disabling or removing unused visuals, and reducing the number of visuals on a single report page.
+
+21. Describe the different layers involved in Power BI architecture.
+    - The Power BI architecture consists of the following layers: Data Source Layer (connects to various data sources), Data Transformation Layer 
+	  (uses Power Query to clean and transform data), Data Modeling Layer (defines relationships, calculated columns, and measures), Visualization Layer (creates reports and dashboards), and Service Layer (manages sharing, collaboration, and data refresh).
+	
+
+22. How do you implement data lineage in Power BI?
+    - Data lineage can be implemented in Power BI by using dataflows to track the transformation steps and dependencies of data sources. 
+	  Additionally, documenting the data transformation processes in Power Query and maintaining clear and consistent naming conventions for tables, columns, and measures helps track data lineage.
+
+23. What is the role of the M language in Power BI?
+    - The M language is used in Power Query to perform data transformation and manipulation tasks. 
+	It allows users to create complex data transformation steps, customize data import processes, and automate repetitive tasks in the data preparation stage.
+
+24. How do you create a gauge chart in Power BI?
+    - To create a gauge chart, go to the Report View, select the data fields you want to visualize (typically a single value), and then choose the "Gauge" option from the visualizations pane. A gauge chart is used to show progress towards a target value.
+
+25. What is the difference between a heat map and a filled map in Power BI?
+    - A heat map uses color gradients to represent the density or intensity of data points within a specific area, while a filled map colors geographic areas (such as countries or states) based on the value of a specific measure. 
+	  Heat maps are typically used to show data distribution patterns, whereas filled maps are used to compare data across different regions.
+
+26. Explain the concept of data masking in Power BI and its use cases.
+    - Data masking in Power BI involves obscuring sensitive data to protect privacy and ensure compliance with data protection regulations.
+      This can be done using techniques such as anonymization, pseudonymization, or data obfuscation. Data masking is useful in scenarios 
+	  where data needs to be shared with stakeholders without exposing sensitive information.
+
+27. What is the function of the "Append Queries" feature in Power BI, and how is it used?
+    - The "Append Queries" feature in Power BI allows users to combine data from two or more tables by appending rows from one table to another. 
+	   It is used in the Power Query Editor to consolidate data from multiple sources or tables into a single table for analysis and reporting.
+	
+	
+1. Can we use Username and Userprinciplename dax function in static RLS
+   = Yes, these functions can be used in static RLS to filter data based on user identity.
+    Data Export
+	
+	How can you export data from Power BI reports to Excel?  
+**A:** Use the "Export Data" option available in the report visuals menu to export data to Excel.
+
+---
+
+   
+   
+1. **Does Power BI maintain/store historical data?**
+   - No, Power BI itself doesnt store data. It connects to various data sources where historical data can be stored.
+
+2. **Is it possible to create drill down and drill up on 3 fact tables?**
+   - Yes, you can create drill down and drill up across multiple fact tables by using a common dimension table.
+
+3. **If there are constraints applied on the table, does the Primary key and Foreign key get affected in Power BI?**
+   - No, Power BI does not enforce database constraints like primary key or foreign key. It relies on the data model defined within it.
+
+4. **How will you identify the type of license by looking at the workspace?**
+   - The type of license can be identified by the workspace features available, such as sharing options, refresh rates, and whether premium features are enabled.
+
+5. **How will you do unit testing in Power BI?**
+   - Unit testing can be done by validating DAX calculations, comparing report data with the source data, and checking visual outputs.
+
+6. **How do you do report validation?**
+   - Report validation involves verifying data accuracy, checking calculations, and ensuring that visuals represent the data correctly.
+
+7. **How will you cross verify the data which is coming from the data source to the report?**
+   - Cross-verification can be done by comparing the data in Power BI with the source data using tools like Excel or SQL queries.
+
+8. **What is dual mode in Power BI modeling?**
+   - Dual mode allows a table to function as both an import and a direct query table, optimizing performance and flexibility.
+
+9. **Total = a*b/c*d, how will you optimize this DAX code in Power BI?**
+   - Optimize by simplifying the calculation and ensuring variables are used appropriately for efficiency.
+
+10. **Difference between star schema and snowflake schema?**
+    - Star schema has a central fact table connected to dimension tables. Snowflake schema normalizes dimension tables into multiple related tables.
+
+11. **What is data flow in Power BI?**
+    - Data flow is a collection of data transformation processes used to connect, cleanse, and reshape data within Power BI.
+
+12. **Different types of refreshes in Power BI?**
+    - Types include on-demand, scheduled, incremental, and automatic refreshes.
+
+13. **Challenges you have faced during the development of reports?**
+    - Common challenges include data quality issues, performance optimization, handling large datasets, and ensuring user requirements are met.
+
+14. **What are field parameters?**
+    - Field parameters allow dynamic changes in report visuals by enabling users to switch between different fields or measures.
+
+15. **How to keep the default total sales values even if external users apply filters?**
+    - Use the ALL or REMOVEFILTERS DAX functions to ignore filters on specific measures.
+
+16. **Tell about Row Level Security (RLS) and its types?**
+    - RLS restricts data access for users based on roles. Types include static RLS (defined roles) and dynamic RLS (based on user attributes).
+
+17. **I have a category column with a,b,c,d, and I want to show a visual with the x-axis in the order of c,d,a,b. How to handle this scenario in Power BI?**
+    - Create a custom sort order column in the data model and use it to sort the visual.
+
+---
+
+1. **Difference between KPI and Dimensions?**
+    - KPIs are measurable values that indicate performance. Dimensions are categories or attributes used to segment data.
+
+2. **How do you optimize Power BI reports for performance?**
+    - Use optimized data models, reduce dataset size, minimize complex calculations, use aggregations, and implement proper indexing.
+
+3. **Can you explain the concept of Query Folding in Power BI?**
+    - Query folding refers to the ability of Power BI to push data transformations back to the source database to improve efficiency.
+
+4. **How do you handle security in Power BI?**
+    - Use Row-Level Security (RLS) to restrict data access, set up proper user roles, and secure datasets and reports.
+
+5. **Explain Row-Level Security (RLS).**
+    - RLS restricts data access at the row level based on user roles, ensuring users only see data relevant to their permissions.
+
+6. **How do you implement time intelligence in Power BI?**
+    - Use built-in DAX functions like TOTALYTD, SAMEPERIODLASTYEAR, and DATEADD to perform time-based calculations.
+
+7. **Describe a complex Power BI project you have worked on. What were the challenges and how did you overcome them?**
+    - Example: Building a sales dashboard for multiple regions with different currencies. 
+	  Challenges included handling data granularity and currency conversion. Overcame by using a star schema, 
+	  DAX measures for currency conversion, and slicers for region-specific views.
+
+cross of adhoc reports power bi
+paginated reports power bi
+================================================================================
+==========================						       =========================
+================================================================================
+	
+	
+==DAX ==
+	
+Handling Missing value-
+New Column = coalesce(table[Age],0)
+
+Age=COALESCE(GYM[Age],AVERAGE(GYM[Age]))
+
+check table is empty or not = ISEMPTY(menu)
+
+ISEMPTY(columnName)
+
+ISBLANK()
+-----------------------------------------------
+
+==Time Intellegence DAX==
+
+TOTALYTD -It is particularly useful in scenarios where you want to see cumulative totals from the beginning of the year to a specific date.
+
+sales YTD = TOTALYTD([Sale_value],orders[order_date].[Date])
+
+sales YTD = TOTALYTD([sales],'Date'[Date]) - preferred approach
+
+
+
+TOTALMTD(SUM(Amount),DATESMTD,table[Dates]))
+
+sale same period last year = CALCULATE([Sale_value],SAMEPERIODLASTYEAR(orders[order_date].[Date])) 
+
+Sale Yesterday = CALCULATE([Sale_value],DATEADD(orders[order_date].[Date],-1,DAY))
+
+Sales Last Month = CALCULATE([Sale_value], PARALLELPERIOD(orders[order_date].[Date],-1,MONTH))
+
+Sales QTD = TOTALQTD([Sale_value],orders[order_date].[Date])
+
+Sales YOY  var = 
+If(ISBLANK([sale same period last year]),BLANK(),[Sale_value]-[sale same period last year])
+
+Sales YoY% = DIVIDE([Sales YOY  var],[sale same period last year])
+
+Sales YTD Fiscal = TOTALYTD([Sales QTD],orders[order_date].[Date],"06-30")
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+saleyoy%= var if 
+
+
+==Iterator==
+It is a  DAX functions that iterate over a table to perform calculations row by row. 
+These are the iterator function- AVERAGEX, MAXX, MINX, COUNTX, and RANKX
+
+Sum function will sum up all the value in Amount column--- Total Sales = SUM(Sales[Amount])
+SUMX- It is an iterator function and evaluate and expression for each row in table --  Total Sales Amount = SUMX(Sales, Sales[Quantity] * Sales[Price])
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+ 
+== FILTERS ==
+
+filter functions are used to manipulate and apply filters to tables and columns
+
+--FILTER,ALL,ALLEXCEPT,ALLSELECTED,CALCULATE,CALCULATETABLE,KEEPFILTERS,REMOVEFILTERS,RELATEDTABLE,VALUES.
+
+Total Sales Electronics Over 10 = CALCULATE(
+    SUM(Sales[Amount]),
+    FILTER(Sales, Sales[Quantity] > 10 && Sales[Category] = "Electronics")
+)
+Total Sales All Products = CALCULATE(SUM(Sales[Amount]), ALL(Product))
+Total Sales Except Region = CALCULATE(SUM(Sales[Amount]), ALLEXCEPT(Sales, Sales[Region]))
+Total Sales All Selected Products = CALCULATE(SUM(Sales[Amount]), ALLSELECTED(Product))
+Total Sales Specific Category = CALCULATE(SUM(Sales[Amount]), Sales[Category] = "Electronics")
+Electronics Sales = CALCULATETABLE(Sales, Sales[Category] = "Electronics")
+Total Sales With Extra Filter = CALCULATE(SUM(Sales[Amount]), KEEPFILTERS(Sales[Quantity] > 5))
+Total Sales No Region Filters = CALCULATE(SUM(Sales[Amount]), REMOVEFILTERS(Sales[Region]))
+Total Sales For Customer = SUMX(RELATEDTABLE(Sales), Sales[Amount])
+Total Sales By Category = SUMX(VALUES(Sales[Category]), CALCULATE(SUM(Sales[Amount])))
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+== RELATED ==
+
+Returns a related value from another table.
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+== Granularity ==
+It is the level of detail or precision of the data that is used in a report or analysis.
+It  is depend of what each row define as a distinct value 
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+== Star Schema ==
+
+ is a type of database schema that is characterized by a central fact table that is surrounded by dimension tables.
+ 
+Fact Table: Contains quantitative data for analysis (e.g., sales amount, units sold).
+Dimension Tables: Contain descriptive attributes related to the fact data (e.g., product details, customer information, time periods).
+
+Adv - smplified queries, Improved performance 
+Dis - dimension table can have redundent data 
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+== snowflake Schema ==
+
+A snowflake schema is a multi-dimensional data model that is an extension of a star schema,
+ where dimension tables are broken down into subdimensions
+ 
+ 
+---------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
+How to resolve many to many relationship
+=> create bridge table / Junction table  between them.
+
+
+
+--------------------------
+
+
+== Role playing dimension ==
+
+	A Role-Playing Dimension refers to a scenario where a single dimension table is used multiple 
+	times in the same data model to play different roles.
+	It Can be useful when you have inactive relationship and want to use that relationship for your calculation
+	A role-playing dimension is a single dimension table that is used multiple times within the same data model 
+	to serve different purposes. 
+	For example, at Adventure Works, the date dimension table has three relationships to the reseller sales facts.
+	 The same dimension table can be used to filter the facts by order date, ship date, or delivery date.
+	 
+	 The only way to user inactive relationship is USERELATIONSHIP function
+	 
+	 Ex - Total Sales by Order Date = 
+			CALCULATE(
+				SUM(Sales[SalesAmount]),
+				USERELATIONSHIP(Sales[OrderDate], Date[Date])
+			)
+			Total Sales by Ship Date = 
+			CALCULATE(
+				SUM(Sales[SalesAmount]),
+				USERELATIONSHIP(Sales[ShipDate], Date[Date])
+			)
+			
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+### Power BI Performance Optimization - Short Notes
+
+	#### 1. **Data Modeling**
+	- **Simplify Your Model:**
+	  - Remove unnecessary columns and tables.
+	  - Use a star schema (fact and dimension tables).
+	  - Optimize data types (e.g., integers for IDs instead of text).
+
+	- **Reduce Data Size:**
+	  - Aggregate data at the source.
+	  - Apply filters at the source to load only relevant data.
+
+	#### 2. **DAX Calculations**
+	- **Efficient DAX Functions:**
+	  - Reduce cardinality in relationships; avoid unique values.
+	  - Simplify calculations; break complex formulas into intermediate measures.
+	  - Prefer `SUMX` over `CALCULATE(SUM(...))`.
+
+	- **Optimize Relationships:**
+	  - Reduce cardinality; avoid unique values in relationships when possible.
+	  - Use single-directional relationships unless bidirectional is necessary.
+
+	#### 3. **Report Design**
+	- **Optimize Visuals:**
+	  - Limit the number of visuals per report page.
+	  - Use standard Power BI visuals; custom visuals sparingly.
+	  - Avoid extensive cross-filtering on large tables.
+
+
+	- **Optimize Queries:**
+	  - Disable auto date/time.
+	  - Ensure query folding to perform transformations at the data source.
+
+	#### 4. **Configuration Settings**
+	- **Data Load Settings:**
+	  - Enable parallel loading of tables.
+	  - Adjust data cache settings for larger datasets.
+
+	#### 5. **Power BI Service Optimizations**
+	- **Dataset Refresh:**
+	  - Use incremental refresh to load only new or changed data.
+	  - Schedule data refreshes during off-peak hours.
+
+	#### 6. **Monitor and Analyze Performance**
+	- **Performance Analyzer:**
+	  - Use Performance Analyzer in Power BI Desktop to measure and identify bottlenecks.
+	  - Optimize queries, visuals, and DAX calculations based on Performance Analyzer insights.
+
+	### Summary
+	To optimize Power BI performance:
+	1. Simplify and reduce your data model.
+	2. Use efficient DAX functions and optimize relationships.
+	3. Design reports with performance in mind.
+	4. Configure data load and cache settings appropriately.
+	5. Use incremental refresh and schedule it wisely.
+	6. Continuously monitor and analyze performance using tools like Performance Analyzer.
+
+	These strategies will help you enhance the performance and responsiveness of your Power BI reports and dashboards.
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+=== Custom visual ===
+
+	Custom visuals in Power BI allow you to extend the default visual capabilities 
+	by using visuals created by the community, third-party developers, or creating your own. 
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+=== Conditional Formating ===
+
+	Conditional formatting lets a report creator specify how colors are displayed in a report, according to a numerical value
+	
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+== Interactive Elements ==
+
+   Interactive Elements in Power BI refer to tools and features that allow users to explore, filter, and engage with data dynamically within reports. 
+   When you want to filter one charts on the selection of another entity from table of chart then  we use Edit Interaction section from format pane 
+   to apply those condition.
+	
+	
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+== Page Navigation, Bookmarks ==
+   
+   Page navigation allows users to move between different report pages seamlessly.
+   Bookmarks capture the current state of a report page, including filters, slicers, sorting, and visibility of visuals.
+   
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+== Pining Visuals to Dashboard ==
+
+   Pinning visuals in Power BI allows you to keep key insights accessible by adding them to dashboards,
+   which can be shared with others or used for monitoring purposes.	
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+=== Two way relationship / Bidirectional relationship ===
+
+	A two-way (bidirectional) relationship in Power BI allows filters to flow in both directions between related tables. 
+	It is useful for complex filtering scenarios and many-to-many relationships
+	Example:= filtering the Products table by Category 1 filters the Sales table to show only relevant sales, and vice versa. This capability enhances
+	data exploration and simplifies model design but should be used carefully due to potential performance impacts.
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+== Alerts In Dashboard == 
+Alerts in Power BI are a powerful feature that allows you to set up notifications when data in your dashboard reaches a certain threshold.
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+== Parameters in Power BI ==
+
+At transformation level it can use to change path of folder dynamically. Also it can be use at report level. It is mostly use when we need to change value dynamically in measure rather than changin in manually.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+== What-if parameter ==
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+== Power BI Excel Integration ==
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+== Power BI Quick Insights ==
+	Quick Insights in Power BI Service is a feature that automatically analyzes your dataset and generates insights, identifying trends, correlations, outliers, 
+	and other interesting patterns in the data
+	
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+== Column From example in Transform Tab ==
+	Add new columns to your data model by providing one or more example values for the new columns
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+=== Dataverse ===
+
+	Dataverse is a cloud-based data storage platform within the Microsoft Power Platform. It offers a secure, scalable, 
+	and relational database with predefined entities and relationships, along with the ability to create custom tables.
+	Dataverse is designed for storing and managing data that powers applications built with Power Apps, Power Automate, 
+	and other Microsoft services.
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+=== Datamart ===
+
+	Datamart in Power BI is a self-service, hybrid data warehouse that enables users to create their own data models directly within Power BI. 
+	It is designed for users who need to build and manage their own data warehouses without relying on IT. Datamarts combine the capabilities 
+	of Power BI, Azure SQL Database, and Power Query to allow users to ingest, transform, and model data, then visualize it in Power BI reports.
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+=== Shared Datasets ===
+
+	Shared Datasets in Power BI are reusable datasets that can be created once and used across multiple reports and dashboards. These datasets are 
+	centrally managed, allowing for consistent data across different reports. By using shared datasets, organizations can ensure that users work with
+	a single version of the truth, reducing redundancy and improving collaboration.
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+	PowerPivot and PowerQuery
+-- Publishing from Excel
+   Power BI and R
+    Using R Scripts in Power BI
+    R Visuals
+-- Power BI and Python
+    Using Python Scripts
+    Python Visuals
+-- Power Automate and Power BI
+    Automating Workflows
+    Data Alerts and Actions
+---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+=== Create 
+ ===
+		Calendar = 
+		VAR MinOrderDate = MIN(orders[order_date])
+		VAR MaxOrderDate = MAX(orders[order_date])
+		VAR Days = CALENDAR(MinOrderDate, MaxOrderDate)
+		RETURN 
+		ADDCOLUMNS (
+			Days,
+			"Year", YEAR ( [Date] ),
+			"Quarter", QUARTER ( [Date] ),
+			"Month Number", MONTH ( [Date] ),
+			"Month", FORMAT ( [Date], "MMMM" ),
+			"Day", DAY ( [Date] ),
+			"DayOfWeek", FORMAT ( [Date], "dddd" ),
+			"WeekOfYear", WEEKNUM ( [Date], 2 ), -- Adjust week starting day if needed
+			"Year Month Number", YEAR ( [Date] ) * 100 + MONTH ( [Date] ),
+			"Year Month", FORMAT ( [Date], "MMM yy" )
+		)
+
+
+=== Create Hierarchy ===
+
+A hierarchy in Power BI can give you a consistent data exploration and drill down experience across your reports
+It can be created in Table View tab by right clicking on specific field in the column 
+
+
+== Power Automate ==
+
+Power Automate enhances Power BI by automating tasks such as data refreshes, sending notifications, and integrating with other applications and services.
+ This enables users to create efficient workflows that save time and ensure data is always up-to-date and accessible.
+ 
+ 
+ 
+ 
+ 
+## IBM Power BI Interview Questions
+
+1. How can you create and configure a data gateway in Power BI?
+   - Install the On-premises Data Gateway on a local server. In the Power BI service, go to "Manage Gateways" and add a new gateway. Configure the gateway to connect to your on-premises data sources by providing the necessary connection details and credentials.
+
+2. Explain the process of creating a dynamic tooltip in Power BI.
+   - Create a new page in your Power BI report and design it to serve as a tooltip. Set the page size to "Tooltip" under Page Information. Then, configure your visuals to use this custom tooltip page by selecting it under the Tooltip field well.
+
+3. How does Power BI handle real-time data streaming, and what are its use cases?
+   - Power BI can handle real-time data through streaming datasets, which can be set up via the Power BI service using Azure Stream Analytics or REST API. This is useful for scenarios like live dashboards, IoT data monitoring, or tracking social media activity in real-time.
+
+4. What are the different types of data relationships in Power BI?
+   - Power BI supports one-to-one, one-to-many, and many-to-many relationships. These relationships help in defining how tables are related to each other, allowing for accurate data modeling and analysis.
+
+5. Describe the purpose and usage of Power BI Premium.
+   - Power BI Premium offers dedicated cloud resources for your organization, enabling better performance and larger dataset storage. It includes features like paginated reports, AI capabilities, and enhanced data refresh rates, making it suitable for enterprise-level deployments.
+
+6. How do you create a sunburst chart in Power BI?
+   - Use a custom visual from the Power BI Marketplace. Download and import the sunburst chart visual, then add it to your report and configure it with your hierarchical data.
+
+7. What are the differences between a line chart and an area chart in Power BI?
+   - A line chart displays data trends over time using lines to connect data points. An area chart is similar but fills the area under the lines, emphasizing the volume of data and making it easier to see the magnitude of values over time.
+
+8. Explain the concept of Data Analysis Expressions (DAX) in Power BI.
+   - DAX is a formula language used to create custom calculations and measures in Power BI. It is similar to Excel formulas but optimized for data modeling and analytical purposes within Power BI, allowing for powerful and complex data manipulation.
+
+9. What is the significance of the "Drillthrough" feature in Power BI?
+   - The Drillthrough feature enables users to click on a data point in a visual and navigate to a detailed report page that focuses on the selected data. This allows for deeper data exploration and analysis directly from summary visuals.
+
+## Capgemini Power BI Interview Questions
+
+1. How do you implement row-level security (RLS) in Power BI?
+   - Define roles and rules within Power BI Desktop by creating DAX expressions that filter data based on user roles. After publishing the report to the Power BI service, assign users to these roles to control their data access based on the defined security rules.
+
+2. What are the best practices for designing a Power BI dashboard?
+   - Ensure simplicity and clarity by using appropriate visuals and avoiding clutter. Focus on key metrics and KPIs, use consistent colors and formats, provide interactivity with filters and slicers, and ensure the dashboard is responsive and accessible.
+
+3. Can you explain the Power BI report lifecycle?
+   - The lifecycle starts with developing the report in Power BI Desktop, followed by publishing it to the Power BI Service. Reports can then be shared and collaborated on within the organization. Regular data refresh schedules should be set up, and ongoing updates and maintenance should be performed to keep the report relevant and accurate.
+
+4. How does Power BI handle data refresh and scheduling?
+   - In the Power BI service, you can configure automatic data refresh schedules for your datasets. This ensures that the data is updated at specified intervals, maintaining the accuracy and timeliness of the reports and dashboards. Different options are available for different data sources, including direct query, scheduled refresh, and live connections.
+
+5. What is the role of the Query Editor in Power BI?
+   - The Query Editor, accessed through Power BI Desktop, allows you to clean, transform, and shape your data before loading it into the data model. You can apply various transformations, such as filtering rows, renaming columns, and merging tables, ensuring the data is in the desired format for analysis.
+
+6. How do you create a funnel chart in Power BI?
+   - Select the Funnel Chart visual from the Visualizations pane, then add your data fields to the Category and Values wells. Configure the chart to represent the different stages of a process, with each stage's value decreasing from the top to the bottom of the chart.
+
+7. What are the advantages of using a scatter plot in Power BI?
+   - A scatter plot is useful for identifying relationships and patterns between two numerical variables. It helps in visualizing correlations, clusters, and outliers within the data, providing insights into the distribution and trends of the variables.
+
+8. Explain the concept of incremental refresh in Power BI.
+   - Incremental refresh allows you to refresh only the new or changed data in large datasets instead of refreshing the entire dataset. This significantly reduces the time and resources needed for data refresh operations, especially for datasets with historical data that doesn't change.
+
+9. What is the purpose of the "Group By" feature in Power BI, and how is it used?
+   - The "Group By" feature in Power BI allows you to group rows of data based on one or more columns and perform aggregations like sum, average, or count on these groups. This is useful for summarizing and analyzing data at different levels of granularity.
+
+## Deloitte Power BI Interview Questions
+
+1. How can you configure and use custom visuals in Power BI?
+   - Download custom visuals from the Power BI Marketplace, import them into your report via the "Import a visual from a file" option, and then use them in your report like any other visual.
+
+2. What techniques can be employed to improve query performance in Power BI?
+   - Optimize data models by removing unnecessary columns and tables, reduce the complexity of DAX calculations, use efficient data types, and leverage aggregations and indexing. Also, consider using DirectQuery or composite models for large datasets.
+
+3. Describe the integration capabilities of Power BI with other Microsoft services.
+   - Power BI integrates seamlessly with Microsoft services such as Excel, Azure, SharePoint, Teams, and Power Apps. This allows for importing data, embedding reports, collaborating on data analysis, and creating interactive applications.
+
+4. What is the difference between Import mode and DirectQuery mode in Power BI?
+   - Import mode loads data into Power BI’s in-memory storage for fast performance and offline access. DirectQuery mode queries the data source directly at runtime, ensuring up-to-date data but potentially slower performance.
+
+5. How do you create a pareto chart in Power BI?
+   - Use a combination of a bar chart and a line chart. Create a bar chart for categories sorted by frequency and add a cumulative percentage line chart over the bars.
+
+6. What are the advantages of using Power BI templates?
+   - Templates allow you to reuse report structures and layouts with different datasets. They save time and ensure consistency across reports, facilitating faster report creation and standardization.
+
+7. Explain the concept of dataflows in Power BI.
+   - Dataflows are a way to create reusable ETL processes within Power BI. They allow you to extract, transform, and load data from various sources into a common storage model that can be reused across multiple reports and dashboards.
+
+8. What is the purpose of the "Merge Queries" feature in Power BI, and how is it used?
+   - The "Merge Queries" feature allows you to join two or more tables based on a common column. It is used to combine related data from different sources into a single query, facilitating more comprehensive data analysis.
+
+9. How do you create and manage data alerts in Power BI?
+   - Set up data-driven alerts on dashboards in the Power BI service. Select a visual, configure the alert criteria (such as thresholds), and specify the frequency and notification method. Alerts notify users when data meets the specified conditions, allowing for proactive monitoring.
+ 
+ 
+What are POWER BI dataflow?
+Answer: Dataflows are a collection of tables created and managend the Power Bl service, where you can ingest, transform and stor
+data in a cloud environment.
+
+ 
+ 
+ -------------------------------------
+ -------------------------------------
+ If there is no 2 way relation between and you want to create measure based on the filter of other column 
+ 
+ 
+ 
+ 
+ 
+ Format Pane
+Format colors
+stylistic
+Position visual
+Align visual
+Format Painter
+Custom number and date formatting
+Matrix
+Drill down 
+stacked bar charts
+Bar chart formatting
+Clustered chart
+combo chart
+zoom slider
+Text boxes
+Image, shapes
+Visual level Filter -- Only filter values of visual
+page level --
+report level--
+Advance Filtering --
+Filter Top N items
+Slicer
+Synchronize slicer to multiple pages- use sync slicer to change
+slicer warning
+Sort Visuals -- present in 3 dot in each visual
+small multiples -- it is use when we need same graphs for each region then we can add region filter in small multiple section to get graph date wise
+Bookmarks--
+Group and Layer Visualization
+Drillthrough
+Buttons and Actions
+Page Navigation and Drill through actions
+Enable Natural Language Queries 
+Page formatting
+Tooltip pages
+Page and Bookmark Navigator
+
+
+Ribbon chart
+  Use to display ranking of data over time or across category
+  Use particularly to show how rank changes dynamically.
+  
+Waterfall chart
+A waterfall chart is a type of data visualization that helps to understand the cumulative effect of sequential positive and negative values. 
+It is particularly useful for visualizing how an initial value is affected by a series of intermediate values (either increases or decreases) leading to a final result.
+
+
+Interview - 
+Types of chart you have used
+Bar chart
+Line chart 
+Pie chart 
+';]
+
+Format Pane
+Format colors
+stylistic
+Position visual
+Align visual
+Format Painter
+Custom number and date formatting
+Matrix
+Drill down 
+stacked bar charts
+Bar chart formatting
+Clustered chart
+combo chart
+zoom slider
+Text boxes
+Image, shapes
+Visual level Filter -- Only filter values of visual
+page level --
+report level--
+Advance Filtering --
+Filter Top N items
+Slicer
+Synchronize slicer to multiple pages- use sync slicer to change
+slicer warning
+Sort Visuals - present in 3 dot in each visual
+small multiples -- it is use when we need same graphs for each region then we can add region filter in small multiple section to get graph date wise
+Bookmarks--
+Group and Layer Visualization
+Drillthrough
+Buttons and Actions
+Page Navigation and Drill through actions
+Enable Natural Language Queries 
+Page formatting
+Tooltip pages
+Page and Bookmark Navigator
+
+
+Ribbon chart
+  Use to display ranking of data over time or across category
+  Use particularly to show how rank changes dynamically.
+  
+Waterfall chart
+A waterfall chart is a type of data visualization that helps to understand the cumulative effect of sequential positive and negative values. It is particularly useful for visualizing how an initial value is affected by a series of intermediate values (either increases or decreases) leading to a final result.
+
+scatter:-
+Use to display the relationship between continuous variables.
+X,Y axis, data point-
+
+Pie chart-- 
+Donut chart
+Treemaps
+Funnel chart
+
+Maps
+Formatting maps
+Adding Data Category - changing data type
+Creating Hierarchies - create hierarchy of fields
+ArcGIS Maps
+
+Gauges 
+Cards and Multi row cards
+KPI's
+
+
+
+
+Goldman Sachs data analyst interview experience(2+year)
+SQL
+1 -find avg of salaries department wise from table 
+2 -Write a SQL query to see employee name and manager name using a self-join on 'employees' table with columns 'emp_id', 'name', and 'manager_id'.
+3 -newest joinee for every department (solved using lead lag)
+4 -Write a query to find the nth highest salary from a table Employees with columns EmployeeID, Name, and Salary.
+POWER BI
+1. What does Filter context in DAX mean?
+2. Explain how to implement Row-Level Security (RLS) in Power BI.
+3. Describe different types of filters in Power BI.
+4. Explain the difference between 'ALL' and 'ALLSELECTED' in DAX.
+5. How do you calculate the total sales for a specific product using DAX?
+PYTHON 
+1. Create a dictionary, add elements to it, modify an element, and then print the dictionary in alphabetical order of keys.
+2. Find unique values in a list of assorted numbers and print the count of how many times each value is repeated.
+3. Find and print duplicate values in a list of assorted numbers, along with the number of times each value is repeated.
+Apart from that in one round they majorly focused at previous work ex and one case study .
+
+
+
+Recently asked scenario-based Power BI interview question 
+You are a Power BI developer working on a project where two developers need to collaborate on the same report. 
+Developer A focuses on data modeling and creating measures, while Developer B concentrates on designing the user interface and visualizations. 
+Both developers need to work simultaneously on different machines with the same data model.
+How would you enable Developer A and Developer B to work on the same Power BI report at the same time, ensuring that their changes are synchronized?
+
+Answer:
+There are multiple approaches to solving this issue, but the one I used was as follows:
+𝟏. Developer A, who is responsible for creating the data model and calculations, imports all the required data to create the report. He saves the file on his machine and publishes the report to the workspace. This creates a new Power BI semantic model in the workspace.
+𝟐. Developer B, who is responsible for creating visualization graphs, opens a new Power BI file on his machine. He connected to the Power BI semantic model of the same workspace where Developer A published the report. Developer B saves this file on his machine.
+𝟑. Developer B cant see the data view or edit the relationships in the model. He can only create visualizations based on the existing data model and create measures.
+𝟒. Whenever Developer A makes changes to his report, he publishes the updated report to the Power BI service in the same workspace.
+𝟓. Developer B just needs to refresh his report on his machine to get the updated data model and new calculations.
+Using this approach, both developers can work simultaneously on different aspects of the report, ensuring efficient and synchronized report development
+
+I am sharing real interview questions asked in companies nowadays to help you prepare more practically for interviews.
+
+Recently I was Link hashtag#hiring Link ... by Narendra Dudhalkar, Parizkshit (Cognizant)
+Yesterday 5:39 PM
+Narendra Dudhalkar, Parikshit (Cognizant)
+Recently I was hashtag#hiring hashtag#powerbi developers for my team in EXL. 
+Lots of candidates applied for this position; to check the basic understanding of power bi, I prefer to open the conversation with these questions- 
+1. How do you optimize the performance of Power BI reports and dashboards, especially when working with large datasets?
+• Reason for asking: This question evaluates the candidate’s ability to handle performance issues, which is crucial for maintaining efficient, responsive reports. 
+					 I’m looking for an understanding of optimization strategies such as the use of direct query vs. import modes, data model optimization techniques, use of DAX functions efficiently, and reducing data loads through measures like filtering and summarization. Their response should reflect experience in balancing report performance with usability.
+					 
+2. Can you explain the difference between a calculated column and a measure in Power BI? When would you use each?
+• Reason for asking: This question tests the candidate’s foundational knowledge of Power BI’s DAX language and its core concepts. 
+                     Calculated columns and measures are key tools in Power BI, and their appropriate usage is critical for performance and report accuracy. 
+					 I’m looking for a clear understanding of when to use a calculated column (for row-level operations) vs. a measure (for aggregations and dynamic calculations), and insight into how their use can impact performance and scalability.
+
+3. How do you manage data security in Power BI? Can you walk us through how you’ve implemented Row-Level Security (RLS) in a previous project?
+• Reason for asking: Data security is a major concern in data analysis and reporting. This question assesses the candidate’s knowledge of Power BI’s security features, especially Row-Level Security (RLS), which restricts data access based on user roles. I want to understand how they’ve approached setting up RLS, their experience with managing permissions, and their awareness of Power BI’s broader security capabilities like workspace permissions and data sensitivity labels.
+These questions cover crucial areas of Power BI expertise: performance optimization, DAX knowledge, and data security. Let me know if you’d like to modify or add anything!
+So, to start with the whole interview had 3... by Narendra Dudhalkar, Parikshit (Cognizant)
+Yesterday 5:40 PM
+Narendra Dudhalkar, Parikshit (Cognizant)
+
+
+So, to start with the whole interview had 3 rounds...
+📍ROUND 1: Big data, coding
+The round started with general introduction, questions around my project experience & tech stack, and then:
+1. Write a SQL query to find duplicate records in a table.
+
+	select id,count(1) from table having count(1) >1
+2. How would you perform a join on very large datasets?
+
+	
+3. What types of joins would you avoid for performance reasons?
+	cartesion or cross join 
+4. How do you process large CSV file without running to memory issues?
+	By filter with where clause
+5. How do you optimize Spark jobs?
+6. Explain partitioning and bucketing in Hive and their use cases.
+7. What was your experience with desinging scalable and efficient data pipelines?
+8. Calculate the total sales per customer and per product category on sales data using pyspark
+9. CI/CD experience, couple of python questions as well
+📍ROUND 2: Advanced big data, real time
+This round too started with a discussion around my Project experience, and then→ 
+1. How would you ensure data consistency and reliability in a distributed system?
+2. How would you improve the performance of a slow-running ETL job?
+3. Explain your experience with Cloud? explain the services used in Azure?
+4. Explain your experience with ADF, activities used? how did you optimize the pipeline?
+5. Explain your experience with Star schema, data warehousing expereince?
+6. Explain the spark streaming experience?
+7. In depth questions on CI/CD pipelines, what was your tools used to deploy code?
+8. More questions on scenario based questions, around azure cloud.
+Even though I wasn’t able to clear the interviews, it was a great experience for me. 
+I realised, that the reason for my rejection was that- i could have better answered the Scenario Based Questions.
+⭐ I would suggest every Data Engineer to practice more on Scenario based questions in depth about and also practice extensive Mock Interviews with your mentors.
+However, I get it it’s really hard for working professionals to get the right guidance throughout their interview prep. 
+So, if you’re also looking for all-around mentorship, I’d suggest taking help from Bosscoder Academy and getting guidance from industry veterans.
+has context menu
+
+
+==========================================
+
+
+Reportable_Hours = var referencedate = MAX(CDate[Date])
+var previousdates = DATESINPERIOD( 'Previous Date'[Date],
+                    referencedate,
+                     - 'Parameter 1 Month No'[Parameter 1 Month No Value],
+                     MONTH)
+
+            return 
+            CALCULATE( 
+                    SUM(TRIF[Reportable Hours]),
+                    REMOVEFILTERS(CDate[Date]),
+                    KEEPFILTERS('Previous Date'),
+                    USERELATIONSHIP(CDate[Date],'Previous Date'[Date])
+
+            )
+			
+This DAX formula calculates the total **Reportable Hours** for a specific
+ date range based on a user-defined parameter for the number of months to 
+ look back. It starts by determining the maximum date from the `CDate` table 
+ and uses that as the reference point to create a date range with `DATESINPERIOD`, 
+ going back by the number of months specified by `'Parameter 1 Month No'`. The formula 
+ then calculates the sum of `Reportable Hours` from the `TRIF` table for this period,
+ ensuring filters are applied properly using `REMOVEFILTERS`, `KEEPFILTERS`, and activating 
+ an inactive relationship between `CDate` and `Previous Date` with `USERELATIONSHIP`.
