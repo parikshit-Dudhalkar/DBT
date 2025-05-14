@@ -131,3 +131,105 @@ DROP STREAM EMPLOYEES_STREAM;
 ALTER STREAM EMPLOYEES_STREAM SET COMMENT = 'This stream is used to capture changes from employees table';
 
 SHOW STREAMS;
+
+---------snowflake--------------
+
+
+
+
+Step 1: Create the Source and Target Tables
+
+
+-- Source Table
+CREATE OR REPLACE TABLE source_table (
+    employee_id INT,
+    employee_name STRING,
+    employee_salary FLOAT,
+    employee_department STRING
+);
+
+-- Target Table (SCD Type 2)
+CREATE OR REPLACE TABLE target_table (
+    employee_id INT,
+    employee_name STRING,
+    employee_salary FLOAT,
+    employee_department STRING,
+    active_row_ind BOOLEAN,
+    start_date TIMESTAMP,
+    end_date TIMESTAMP
+);
+
+
+--=================================================================================;
+
+Step 2: Create the Stored Procedure
+
+CREATE OR REPLACE PROCEDURE update_scd2()
+RETURNS STRING
+LANGUAGE SQL
+EXECUTE AS CALLER
+AS
+$$
+var sql_command = `
+    MERGE INTO target_table AS t
+    USING source_table AS s
+    ON t.employee_id = s.employee_id AND t.active_row_ind = TRUE
+    WHEN MATCHED AND (
+        t.employee_name != s.employee_name OR
+        t.employee_salary != s.employee_salary OR
+        t.employee_department != s.employee_department
+    ) THEN
+        UPDATE SET t.active_row_ind = FALSE, t.end_date = CURRENT_TIMESTAMP()
+        INSERT (employee_id, employee_name, employee_salary, employee_department, active_row_ind, start_date, end_date)
+        VALUES (s.employee_id, s.employee_name, s.employee_salary, s.employee_department, TRUE, CURRENT_TIMESTAMP(), NULL)
+    WHEN NOT MATCHED THEN
+        INSERT (employee_id, employee_name, employee_salary, employee_department, active_row_ind, start_date, end_date)
+        VALUES (s.employee_id, s.employee_name, s.employee_salary, s.employee_department, TRUE, CURRENT_TIMESTAMP(), NULL)
+`;
+
+snowflake.execute({sqlText: sql_command});
+return "SCD Type 2 update completed.";
+$$;
+
+ -- =================================================================================================;
+ 
+ 
+ 
+Step 3: Create the Task to Trigger the Procedure
+
+
+CREATE OR REPLACE TASK scd2_update_task
+WAREHOUSE = my_warehouse
+SCHEDULE = 'USING CRON 0 * * * *' -- This runs the task every hour
+AS
+CALL update_scd2();
+
+
+--===================================================================================================;
+
+Step 4: Enable the Task
+
+ALTER TASK scd2_update_task RESUME;
+
+
+
+
+
+-- Insert initial data
+INSERT INTO source_table (employee_id, employee_name, employee_salary, employee_department)
+VALUES 
+(1, 'John Doe', 50000, 'Engineering'),
+(2, 'Jane Smith', 60000, 'Marketing'),
+(3, 'Alice Johnson', 55000, 'Sales');
+
+-- Insert data with changes to test updates
+INSERT INTO source_table (employee_id, employee_name, employee_salary, employee_department)
+VALUES 
+(1, 'John Doe', 52000, 'Engineering'), -- Salary change
+(2, 'Jane Smith', 60000, 'Marketing'), -- No change
+(3, 'Alice Johnson', 55000, 'HR');     -- Department change
+
+-- Insert new data to test inserts
+INSERT INTO source_table (employee_id, employee_name, employee_salary, employee_department)
+VALUES 
+(4, 'Bob Brown', 70000, 'Finance');

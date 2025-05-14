@@ -1,0 +1,129 @@
+1. Why we should use snowflake?
+-> Scalability - It allows for inedpendent scaling of computer and storage resources,
+   Performance -  Fast query execution  and efficient data processing
+   user friendly, multiple cloud support , data sharing internally and externally
+   security, 
+   
+2. Auto clustering - How it is beneficiar?
+-> It wont create the cluster key automatically,it will reorganize the micro partition according to insert update operaition 
+   and then store that data into micro partion automatically as per cluster key defined, if cluster key is not defined then it
+   will store the data in the insertion form to Clustering simplifies the process of maintaining well-clustered tables, ensuring that data is optimally organized without manual intervention.
+   
+   
+3. What are different options available for warehouse, how its different from each other, when to use which one? book 
+-> Single and multi cluster - covered in book
+4. How snowflake charges from warehouse usage?
+-> Depends on size of ware, type of warehouse, on demand pricing , capacity based pricing
+
+5. How transient table different than permenant table? will it affect the cost if yes why if no why ?
+-> Permenant table have time travel + fail safe, but transient table only have time travel , because of this it will also affect cost as fail safe will have more cost and only time travel will have less cost 
+
+
+6. How snowflake handle semi structure data?
+-> mind 
+7. Architecture explain? book 
+
+8. How snowflake support data sharing in different accounts?
+-> book 
+
+9. Importance of global service layer?
+-> supports data sharing across region , main metadata globally, centralized acceess control.
+
+
+
+10. How snowflake handle cache , start from querying data ?
+->  After runnig the query first Result cache will comes into  picture here it will store the result till 24 hour
+	Then Metadata cache comes into picture it stores table structure, file structure, and location
+	Then Warehouse cache layer  which holds the data till warehouse  is running and used when same data is accessed again.
+	
+11. How metadata cache works
+	Metadata cache have information about tables file,staatistics, so whenever qe hit query it first check if its metadata
+	available or not if yes then it will check it and load the data from micropartition
+	
+12. Concept of micro partitioning
+13. What is cluster key? How it affect the data and table 
+--> Book
+14. After applying cluster key , how it will affect data storage?
+->  It will store the data based on cluster key , normally if its not applied then it will store data by insertion order.
+
+15. Is it advisable to create cluster key on datetime column? what will be solution on that ?
+->  Yes it is at most of the time data is inserted on time based, datetime column makes low maintenance clustering key
+	it makes searching operation fact. but if we are filtering it with multiple dimension column then its not advisable 
+	it will affect cost but will give better performance.
+
+
+
+16. Difference between function and stored procedure?
+->  Function primarily used to return value, while procedure use for logic and control flow.
+	  we can use function inside procedure but not viceversa
+	Function cannot perform DML operations but procedures can 
+	
+
+
+17. Difference between snowpipe and snowstream?
+18. Various steps to injection data from s3 to snowflake?
+->  Book 
+
+19. What are different parameter into copy into command , explain one use case?
+->  Book 
+20. What was source and target in your project?
+21. Did you used python in stored procedure?
+22. How will you redesign this pipeline in snowflake itself using best practice?
+->  Snowpipe for real time data injestion. stream and task for changes tracking and automation
+    Medallion architecture for monular pipeline, 
+    secure views for data protection, log storing for error handling, cluster key for performance 
+
+23. How will you implement error handling part in you pipeline?
+->  we can use try catch while using procedures
+24. Is it possible to create our own library in snowflake?
+->  Yes, you can create one function in python , convert that file into zip, then import that into snoflake using snowsql
+    with put command into stage then this will import in snowpark 
+
+25. How to create stored procedure using python?
+->  Normally how we use sql in python , that waye we can create stored procedure.
+
+26. Stages in snowflake?
+book 
+
+27. How stage can implement data security in snowflake?
+->  Give access control with Role Based Security.
+    In internal stage snowflake automatically encript, and for external we can use third party services.
+    When using external stage use ARN 
+
+28. What are all things present in snowflake query profile?
+29. How to implement role based access in snowflake?
+Book 
+
+30. Medallion Architecture in cloud computing?
+->  Multi Hope architecture
+    This devides the data into 3 layer-  Bronze, Silver and Gold
+    Bronze means injesting data with its original fomr such as , json, csv,etc.
+    Silver means clean , filter, join the data and store into table
+    Gold means high quality aggregated data store into table for reporting
+    
+31. If you are receiving json data and suddenly schema got changed then how will snonwflake handle this 
+->  We store json in the variant , so when we dealing with schema evolution nth will happen if it changes 
+    because we normally extract only required fields from the json, so if any field changes or remove, it will simply return null in that field 
+    
+    
+    
+32. Is it possible to transform data into copy into command?
+->  You cannot transform when you are using  COPY INTO table(loading) , but you can when COPY INTO any stage (unloading)
+
+
+33. What is materialised view?
+34. What is secure view?
+->  Here data is only visible through view , not directly from base table 
+    Logic and structure is hidden
+    cannot be materialized
+    
+35. Why we should use stored procedures?
+->  Encapsulation, workflow automation, Reusability, Performance, Error handling, security 
+36. How you make your  changes in production , what is ci/cd pipeline, have you work, how we deploy it to production by which  tool
+37. How much you will devide your work day to day with snowflake and power bi 
+38. WHat is matrix, Pie chart, in power bi 
+39. Have you worked with multitime zone data , how to convert that  in power bi 
+40. bubble chart?
+41. snowflake and star schema difference/
+42. what did you learn in last 6 months
+43. what do you like about py spark
