@@ -222,3 +222,24 @@ Key Points:
 •	Temporary Table Precedence: The temporary table will take precedence over the permanent table within the session. Any operations performed on permanent_employee will affect the temporary table.
 •	Session Scope: The temporary table exists only for the duration of the session. Once the session ends, the temporary table is dropped automatically, and the permanent table becomes accessible again.
 
+
+
+
+----------------------------------------------
+
+
+darshannd@proton.me
+
+snowrflake
+
+darsh 
+Darshan@123456
+
+Account identifier -BCIYQYH-SF99716
+ 
+ 
+snowsql -a BCIYQYH-SF99716 -u darsh -d dbt -s udl -o log_level=DEBUG -q "PUT file://E:\dbt\dbt_proj\models\example\split_file*.json @~"
+
+ 
+C:\Users\parikshit>snowsql -a BCIYQYH-SF99716 -u darsh -d dbt -s udl -o log_level=DEBUG -q "PUT file://C:/Users/parikshit/Downloads/YelpJSON/Yelp_JSON/yelp_dataset/yelp_academic_dataset_business.json @~"
+ 
